@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "9kskZNWw6KM=",
+  "success": true,
+  "projectFilePath": "C:\\hft_platform\\feeds\\hft.feeds\\hft.feeds.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Praveen P\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.22\\microsoft.netcore.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Praveen P\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.22\\microsoft.windowsdesktop.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Praveen P\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.22\\microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
+  ],
+  "logs": []
+}

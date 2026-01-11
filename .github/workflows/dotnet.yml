@@ -1,0 +1,30 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore -c Release /warnaserror
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Smoke Test Runner
+      # Run for 5 seconds then kill, just to check startup modules
+      run: |
+        dotnet run --project Hft.Runner/Hft.Runner/Hft.Runner.csproj -c Release &
+        PID=$!
+        sleep 5
+        kill $PID

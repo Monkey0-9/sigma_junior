@@ -1,0 +1,15 @@
+C:\hft_platform\infra\hft.infra\bin\Release\net8.0\hft.infra.deps.json
+C:\hft_platform\infra\hft.infra\bin\Release\net8.0\hft.infra.dll
+C:\hft_platform\infra\hft.infra\bin\Release\net8.0\hft.infra.pdb
+C:\hft_platform\infra\hft.infra\bin\Release\net8.0\hft.core.dll
+C:\hft_platform\infra\hft.infra\bin\Release\net8.0\hft.core.pdb
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.csproj.AssemblyReference.cache
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.AssemblyInfoInputs.cache
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.AssemblyInfo.cs
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.csproj.CoreCompileInputs.cache
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.csproj.Up2Date
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.dll
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\refint\hft.infra.dll
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\hft.infra.pdb
+C:\hft_platform\infra\hft.infra\obj\Release\net8.0\ref\hft.infra.dll

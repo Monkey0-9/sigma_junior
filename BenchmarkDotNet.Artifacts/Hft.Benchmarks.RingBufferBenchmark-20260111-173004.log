@@ -1,0 +1,193 @@
+// Validating benchmarks:
+// ***** BenchmarkRunner: Start   *****
+// ***** Found 1 benchmark(s) in total *****
+// ***** Building 1 exe(s) in Parallel: Start   *****
+// start dotnet  restore --nodeReuse:false /p:UseSharedCompilation=false /p:Deterministic=true /p:Optimize=true /p:ArtifactsPath="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1/" /p:OutDir="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\bin\Release\net8.0/" /p:OutputPath="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\bin\Release\net8.0/" /p:PublishDir="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\publish/" in C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1
+// command took 1.32 sec and exited with 0
+// start dotnet  build -c Release --no-restore --nodeReuse:false /p:UseSharedCompilation=false /p:Deterministic=true /p:Optimize=true /p:ArtifactsPath="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1/" /p:OutDir="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\bin\Release\net8.0/" /p:OutputPath="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\bin\Release\net8.0/" /p:PublishDir="C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\publish/" --output "C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\bin\Release\net8.0/" in C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1
+// command took 13.08 sec and exited with 0
+// ***** Done, took 00:00:14 (14.46 sec)   *****
+// Found 1 benchmarks:
+//   RingBufferBenchmark.TryWrite_TryRead: DefaultJob
+
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: High performance)
+// **************************
+// Benchmark: RingBufferBenchmark.TryWrite_TryRead: DefaultJob
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Hft.Benchmarks-DefaultJob-1.dll --anonymousPipes 1460 1444 --benchmarkName Hft.Benchmarks.RingBufferBenchmark.TryWrite_TryRead --job Default --benchmarkId 0 in C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks-DefaultJob-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.8
+// Runtime=.NET 8.0.12 (8.0.12, 8.0.1224.60305), X64 RyuJIT x86-64-v3
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2+BMI1+BMI2+F16C+FMA+LZCNT+MOVBE,AVX,SSE3+SSSE3+SSE4.1+SSE4.2+POPCNT,X86Base+SSE+SSE2,AES+PCLMUL,AvxVnni,SERIALIZE VectorSize=256
+// Job: DefaultJob
+
+OverheadJitting  1: 1 op, 98000.00 ns, 98.0000 us/op
+WorkloadJitting  1: 1 op, 640100.00 ns, 640.1000 us/op
+
+OverheadJitting  2: 16 op, 172800.00 ns, 10.8000 us/op
+WorkloadJitting  2: 16 op, 124300.00 ns, 7.7688 us/op
+
+WorkloadPilot    1: 16 op, 1400.00 ns, 87.5000 ns/op
+WorkloadPilot    2: 32 op, 1100.00 ns, 34.3750 ns/op
+WorkloadPilot    3: 64 op, 1900.00 ns, 29.6875 ns/op
+WorkloadPilot    4: 128 op, 3100.00 ns, 24.2188 ns/op
+WorkloadPilot    5: 256 op, 5600.00 ns, 21.8750 ns/op
+WorkloadPilot    6: 512 op, 10700.00 ns, 20.8984 ns/op
+WorkloadPilot    7: 1024 op, 20700.00 ns, 20.2148 ns/op
+WorkloadPilot    8: 2048 op, 41300.00 ns, 20.1660 ns/op
+WorkloadPilot    9: 4096 op, 82100.00 ns, 20.0439 ns/op
+WorkloadPilot   10: 8192 op, 162600.00 ns, 19.8486 ns/op
+WorkloadPilot   11: 16384 op, 323100.00 ns, 19.7205 ns/op
+WorkloadPilot   12: 32768 op, 631800.00 ns, 19.2810 ns/op
+WorkloadPilot   13: 65536 op, 1353600.00 ns, 20.6543 ns/op
+WorkloadPilot   14: 131072 op, 2593700.00 ns, 19.7884 ns/op
+WorkloadPilot   15: 262144 op, 5064900.00 ns, 19.3211 ns/op
+WorkloadPilot   16: 524288 op, 10122500.00 ns, 19.3071 ns/op
+WorkloadPilot   17: 1048576 op, 20265900.00 ns, 19.3271 ns/op
+WorkloadPilot   18: 2097152 op, 40613800.00 ns, 19.3662 ns/op
+WorkloadPilot   19: 4194304 op, 69996800.00 ns, 16.6885 ns/op
+WorkloadPilot   20: 8388608 op, 102992300.00 ns, 12.2776 ns/op
+WorkloadPilot   21: 16777216 op, 211664100.00 ns, 12.6162 ns/op
+WorkloadPilot   22: 33554432 op, 405043800.00 ns, 12.0712 ns/op
+WorkloadPilot   23: 67108864 op, 804997100.00 ns, 11.9954 ns/op
+
+OverheadWarmup   1: 67108864 op, 139017900.00 ns, 2.0715 ns/op
+OverheadWarmup   2: 67108864 op, 126696600.00 ns, 1.8879 ns/op
+OverheadWarmup   3: 67108864 op, 105973300.00 ns, 1.5791 ns/op
+OverheadWarmup   4: 67108864 op, 104948900.00 ns, 1.5639 ns/op
+OverheadWarmup   5: 67108864 op, 106700400.00 ns, 1.5900 ns/op
+OverheadWarmup   6: 67108864 op, 105312600.00 ns, 1.5693 ns/op
+OverheadWarmup   7: 67108864 op, 104800200.00 ns, 1.5616 ns/op
+OverheadWarmup   8: 67108864 op, 106661500.00 ns, 1.5894 ns/op
+OverheadWarmup   9: 67108864 op, 107349300.00 ns, 1.5996 ns/op
+OverheadWarmup  10: 67108864 op, 106359100.00 ns, 1.5849 ns/op
+
+OverheadActual   1: 67108864 op, 105656900.00 ns, 1.5744 ns/op
+OverheadActual   2: 67108864 op, 105867100.00 ns, 1.5775 ns/op
+OverheadActual   3: 67108864 op, 106774500.00 ns, 1.5911 ns/op
+OverheadActual   4: 67108864 op, 106635500.00 ns, 1.5890 ns/op
+OverheadActual   5: 67108864 op, 106962200.00 ns, 1.5939 ns/op
+OverheadActual   6: 67108864 op, 107218400.00 ns, 1.5977 ns/op
+OverheadActual   7: 67108864 op, 110582200.00 ns, 1.6478 ns/op
+OverheadActual   8: 67108864 op, 105915700.00 ns, 1.5783 ns/op
+OverheadActual   9: 67108864 op, 110784300.00 ns, 1.6508 ns/op
+OverheadActual  10: 67108864 op, 118249700.00 ns, 1.7621 ns/op
+OverheadActual  11: 67108864 op, 116646900.00 ns, 1.7382 ns/op
+OverheadActual  12: 67108864 op, 113686000.00 ns, 1.6941 ns/op
+OverheadActual  13: 67108864 op, 113667300.00 ns, 1.6938 ns/op
+OverheadActual  14: 67108864 op, 104452600.00 ns, 1.5565 ns/op
+OverheadActual  15: 67108864 op, 104861900.00 ns, 1.5626 ns/op
+
+WorkloadWarmup   1: 67108864 op, 793196200.00 ns, 11.8195 ns/op
+WorkloadWarmup   2: 67108864 op, 801753500.00 ns, 11.9471 ns/op
+WorkloadWarmup   3: 67108864 op, 817515400.00 ns, 12.1819 ns/op
+WorkloadWarmup   4: 67108864 op, 810458000.00 ns, 12.0768 ns/op
+WorkloadWarmup   5: 67108864 op, 814872100.00 ns, 12.1425 ns/op
+WorkloadWarmup   6: 67108864 op, 828949900.00 ns, 12.3523 ns/op
+WorkloadWarmup   7: 67108864 op, 852885500.00 ns, 12.7090 ns/op
+WorkloadWarmup   8: 67108864 op, 893939800.00 ns, 13.3207 ns/op
+WorkloadWarmup   9: 67108864 op, 812621700.00 ns, 12.1090 ns/op
+
+// BeforeActualRun
+WorkloadActual   1: 67108864 op, 805989500.00 ns, 12.0102 ns/op
+WorkloadActual   2: 67108864 op, 802612000.00 ns, 11.9599 ns/op
+WorkloadActual   3: 67108864 op, 842018400.00 ns, 12.5471 ns/op
+WorkloadActual   4: 67108864 op, 802576000.00 ns, 11.9593 ns/op
+WorkloadActual   5: 67108864 op, 796396900.00 ns, 11.8672 ns/op
+WorkloadActual   6: 67108864 op, 802549100.00 ns, 11.9589 ns/op
+WorkloadActual   7: 67108864 op, 788199200.00 ns, 11.7451 ns/op
+WorkloadActual   8: 67108864 op, 812338700.00 ns, 12.1048 ns/op
+WorkloadActual   9: 67108864 op, 814617400.00 ns, 12.1387 ns/op
+WorkloadActual  10: 67108864 op, 812201000.00 ns, 12.1027 ns/op
+WorkloadActual  11: 67108864 op, 804948100.00 ns, 11.9947 ns/op
+WorkloadActual  12: 67108864 op, 829589500.00 ns, 12.3618 ns/op
+WorkloadActual  13: 67108864 op, 815875100.00 ns, 12.1575 ns/op
+WorkloadActual  14: 67108864 op, 804858400.00 ns, 11.9933 ns/op
+WorkloadActual  15: 67108864 op, 803033000.00 ns, 11.9661 ns/op
+
+// AfterActualRun
+WorkloadResult   1: 67108864 op, 699027300.00 ns, 10.4163 ns/op
+WorkloadResult   2: 67108864 op, 695649800.00 ns, 10.3660 ns/op
+WorkloadResult   3: 67108864 op, 695613800.00 ns, 10.3655 ns/op
+WorkloadResult   4: 67108864 op, 689434700.00 ns, 10.2734 ns/op
+WorkloadResult   5: 67108864 op, 695586900.00 ns, 10.3651 ns/op
+WorkloadResult   6: 67108864 op, 681237000.00 ns, 10.1512 ns/op
+WorkloadResult   7: 67108864 op, 705376500.00 ns, 10.5109 ns/op
+WorkloadResult   8: 67108864 op, 707655200.00 ns, 10.5449 ns/op
+WorkloadResult   9: 67108864 op, 705238800.00 ns, 10.5089 ns/op
+WorkloadResult  10: 67108864 op, 697985900.00 ns, 10.4008 ns/op
+WorkloadResult  11: 67108864 op, 722627300.00 ns, 10.7680 ns/op
+WorkloadResult  12: 67108864 op, 708912900.00 ns, 10.5636 ns/op
+WorkloadResult  13: 67108864 op, 697896200.00 ns, 10.3995 ns/op
+WorkloadResult  14: 67108864 op, 696070800.00 ns, 10.3723 ns/op
+// GC:  0 0 0 0 67108864
+// Threading:  0 0 67108864
+
+// AfterAll
+// Benchmark Process 33784 has exited with code 0.
+
+Mean = 10.429 ns, StdErr = 0.039 ns (0.37%), N = 14, StdDev = 0.146 ns
+Min = 10.151 ns, Q1 = 10.366 ns, Median = 10.400 ns, Q3 = 10.510 ns, Max = 10.768 ns
+IQR = 0.145 ns, LowerFence = 10.148 ns, UpperFence = 10.728 ns
+ConfidenceInterval = [10.264 ns; 10.594 ns] (CI 99.9%), Margin = 0.165 ns (1.58% of Mean)
+Skewness = 0.41, Kurtosis = 3.18, MValue = 2
+
+// ** Remained 0 (0.0%) benchmark(s) to run. Estimated finish 2026-01-11 17:30 (0h 0m from now) **
+Successfully reverted power plan (GUID: 381b4222-f694-41f0-9685-ff5bb260df2e FriendlyName: Balanced)
+// ***** BenchmarkRunner: Finish  *****
+
+// * Export *
+  BenchmarkDotNet.Artifacts\results\Hft.Benchmarks.RingBufferBenchmark-report.csv
+  BenchmarkDotNet.Artifacts\results\Hft.Benchmarks.RingBufferBenchmark-report-github.md
+  BenchmarkDotNet.Artifacts\results\Hft.Benchmarks.RingBufferBenchmark-report.html
+
+// * Detailed results *
+RingBufferBenchmark.TryWrite_TryRead: DefaultJob
+Runtime = .NET 8.0.12 (8.0.12, 8.0.1224.60305), X64 RyuJIT x86-64-v3; GC = Concurrent Workstation
+Mean = 10.429 ns, StdErr = 0.039 ns (0.37%), N = 14, StdDev = 0.146 ns
+Min = 10.151 ns, Q1 = 10.366 ns, Median = 10.400 ns, Q3 = 10.510 ns, Max = 10.768 ns
+IQR = 0.145 ns, LowerFence = 10.148 ns, UpperFence = 10.728 ns
+ConfidenceInterval = [10.264 ns; 10.594 ns] (CI 99.9%), Margin = 0.165 ns (1.58% of Mean)
+Skewness = 0.41, Kurtosis = 3.18, MValue = 2
+-------------------- Histogram --------------------
+[10.110 ns ; 10.334 ns) | @@
+[10.334 ns ; 10.848 ns) | @@@@@@@@@@@@
+---------------------------------------------------
+
+// * Summary *
+
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26200.7462/25H2/2025Update/HudsonValley2)
+13th Gen Intel Core i7-13650HX 2.60GHz, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 10.0.101
+  [Host]     : .NET 8.0.12 (8.0.12, 8.0.1224.60305), X64 RyuJIT x86-64-v3
+  DefaultJob : .NET 8.0.12 (8.0.12, 8.0.1224.60305), X64 RyuJIT x86-64-v3
+
+
+| Method           | Mean     | Error    | StdDev   | Allocated |
+|----------------- |---------:|---------:|---------:|----------:|
+| TryWrite_TryRead | 10.43 ns | 0.165 ns | 0.146 ns |         - |
+
+// * Hints *
+Outliers
+  RingBufferBenchmark.TryWrite_TryRead: Default -> 1 outlier  was  removed (12.55 ns)
+
+// * Legends *
+  Mean      : Arithmetic mean of all measurements
+  Error     : Half of 99.9% confidence interval
+  StdDev    : Standard deviation of all measurements
+  Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  1 ns      : 1 Nanosecond (0.000000001 sec)
+
+// * Diagnostic Output - MemoryDiagnoser *
+
+
+// ***** BenchmarkRunner: End *****
+Run time: 00:00:25 (25.82 sec), executed benchmarks: 1
+
+Global total time: 00:00:40 (40.88 sec), executed benchmarks: 1
+// * Artifacts cleanup *
+Artifacts cleanup is finished

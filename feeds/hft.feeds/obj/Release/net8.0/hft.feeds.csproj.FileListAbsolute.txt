@@ -1,0 +1,15 @@
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.csproj.AssemblyReference.cache
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.AssemblyInfoInputs.cache
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.AssemblyInfo.cs
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.csproj.CoreCompileInputs.cache
+C:\hft_platform\feeds\hft.feeds\bin\Release\net8.0\hft.feeds.deps.json
+C:\hft_platform\feeds\hft.feeds\bin\Release\net8.0\hft.feeds.dll
+C:\hft_platform\feeds\hft.feeds\bin\Release\net8.0\hft.feeds.pdb
+C:\hft_platform\feeds\hft.feeds\bin\Release\net8.0\hft.core.dll
+C:\hft_platform\feeds\hft.feeds\bin\Release\net8.0\hft.core.pdb
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.csproj.Up2Date
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.dll
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\refint\hft.feeds.dll
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\hft.feeds.pdb
+C:\hft_platform\feeds\hft.feeds\obj\Release\net8.0\ref\hft.feeds.dll

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/ml/">
+    <Project Path="ml/hft.ml/hft.ml.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Hft.Benchmarks/Hft.Benchmarks.csproj" />
+  </Folder>
+</Solution>

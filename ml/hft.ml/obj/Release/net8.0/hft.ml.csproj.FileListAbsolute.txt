@@ -1,0 +1,15 @@
+C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.ml.deps.json
+C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.ml.dll
+C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.ml.pdb
+C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.core.dll
+C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.core.pdb
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.csproj.AssemblyReference.cache
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.AssemblyInfoInputs.cache
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.AssemblyInfo.cs
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.csproj.CoreCompileInputs.cache
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.csproj.Up2Date
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.dll
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\refint\hft.ml.dll
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\hft.ml.pdb
+C:\hft_platform\ml\hft.ml\obj\Release\net8.0\ref\hft.ml.dll

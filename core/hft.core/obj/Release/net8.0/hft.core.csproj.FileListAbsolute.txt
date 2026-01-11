@@ -1,0 +1,11 @@
+C:\hft_platform\core\hft.core\bin\Release\net8.0\hft.core.deps.json
+C:\hft_platform\core\hft.core\bin\Release\net8.0\hft.core.dll
+C:\hft_platform\core\hft.core\bin\Release\net8.0\hft.core.pdb
+C:\hft_platform\core\hft.core\obj\Release\net8.0\hft.core.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\core\hft.core\obj\Release\net8.0\hft.core.AssemblyInfoInputs.cache
+C:\hft_platform\core\hft.core\obj\Release\net8.0\hft.core.AssemblyInfo.cs
+C:\hft_platform\core\hft.core\obj\Release\net8.0\hft.core.csproj.CoreCompileInputs.cache
+C:\hft_platform\core\hft.core\obj\Release\net8.0\hft.core.dll
+C:\hft_platform\core\hft.core\obj\Release\net8.0\refint\hft.core.dll
+C:\hft_platform\core\hft.core\obj\Release\net8.0\hft.core.pdb
+C:\hft_platform\core\hft.core\obj\Release\net8.0\ref\hft.core.dll

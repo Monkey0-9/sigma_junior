@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+<TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Hft.OrderBook</RootNamespace>
+    
+    <!-- Performance optimizations -->
+    <Optimize>true</Optimize>
+    <TieredCompilation>false</TieredCompilation>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    
+    <!-- Build configuration -->
+    <Configuration>Release</Configuration>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    
+    <!-- Package metadata -->
+    <Authors>HFT Platform Team</Authors>
+    <Description>Enterprise-grade order-book simulator with queue position modeling for institutional backtesting</Description>
+    <RepositoryUrl>https://github.com/hft-platform/orderbook</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\hft.core\hft.core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- BenchmarkDotNet for performance testing (development only) -->
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" Condition="'$(Configuration)' == 'Release'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\core\hft.core\OrderSide.cs" Link="Core\OrderSide.cs" />
+  </ItemGroup>
+
+</Project>
+

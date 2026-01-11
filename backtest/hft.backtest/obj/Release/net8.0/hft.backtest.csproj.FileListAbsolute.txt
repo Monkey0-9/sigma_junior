@@ -1,0 +1,5 @@
+C:\hft_platform\backtest\hft.backtest\obj\Release\net8.0\hft.backtest.csproj.AssemblyReference.cache
+C:\hft_platform\backtest\hft.backtest\obj\Release\net8.0\hft.backtest.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\backtest\hft.backtest\obj\Release\net8.0\hft.backtest.AssemblyInfoInputs.cache
+C:\hft_platform\backtest\hft.backtest\obj\Release\net8.0\hft.backtest.AssemblyInfo.cs
+C:\hft_platform\backtest\hft.backtest\obj\Release\net8.0\hft.backtest.csproj.CoreCompileInputs.cache
