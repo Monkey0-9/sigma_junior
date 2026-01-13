@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.ml")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c19212c62381cdd9479c4cebe88f00e6de241a92")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f89ce14adb611b835af93746b54da8ad2539bddc")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.ml")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.ml")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\hft_platform\\risk\\hft.risk\\hft.risk.csproj": {}
+    "C:\\hft_platform\\risk\\Hft.Risk\\Hft.Risk.csproj": {}
   },
   "projects": {
     "C:\\hft_platform\\core\\hft.core\\hft.core.csproj": {
@@ -156,14 +156,14 @@
         }
       }
     },
-    "C:\\hft_platform\\risk\\hft.risk\\hft.risk.csproj": {
+    "C:\\hft_platform\\risk\\Hft.Risk\\Hft.Risk.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\hft_platform\\risk\\hft.risk\\hft.risk.csproj",
-        "projectName": "hft.risk",
-        "projectPath": "C:\\hft_platform\\risk\\hft.risk\\hft.risk.csproj",
+        "projectUniqueName": "C:\\hft_platform\\risk\\Hft.Risk\\Hft.Risk.csproj",
+        "projectName": "Hft.Risk",
+        "projectPath": "C:\\hft_platform\\risk\\Hft.Risk\\Hft.Risk.csproj",
         "packagesPath": "C:\\Users\\Praveen P\\.nuget\\packages\\",
-        "outputPath": "C:\\hft_platform\\risk\\hft.risk\\obj\\",
+        "outputPath": "C:\\hft_platform\\risk\\Hft.Risk\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Praveen P\\AppData\\Roaming\\NuGet\\NuGet.Config"
