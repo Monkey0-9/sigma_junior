@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hft.Benchmarks")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c19212c62381cdd9479c4cebe88f00e6de241a92")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b7e946456593905d5b148b1b392fc2b970780d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hft.Benchmarks")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hft.Benchmarks")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

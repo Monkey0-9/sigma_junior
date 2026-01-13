@@ -11,9 +11,9 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.risk")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f89ce14adb611b835af93746b54da8ad2539bddc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b7e946456593905d5b148b1b392fc2b970780d")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.risk")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.risk")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

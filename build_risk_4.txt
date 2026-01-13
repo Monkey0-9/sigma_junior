@@ -1,0 +1,19 @@
+﻿  Determining projects to restore...
+  All projects are up-to-date for restore.
+  hft.core -> C:\hft_platform\core\hft.core\bin\Release\net8.0\hft.core.dll
+  hft.infra -> C:\hft_platform\infra\hft.infra\bin\Release\net8.0\hft.infra.dll
+C:\hft_platform\risk\Hft.Risk\Kernel\GovernanceKernel.cs(44,17): error CA1822: Member 'IsStrategyApproved' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+C:\hft_platform\risk\Hft.Risk\Kernel\GovernanceKernel.cs(24,17): error CA1822: Member 'RequestOverride' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+C:\hft_platform\risk\Hft.Risk\Kernel\StressTestEngine.cs(36,18): error CA1822: Member 'SimulateMarketCrash' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+C:\hft_platform\risk\Hft.Risk\Kernel\RiskKernel.cs(19,29): error CA1823: Unused field '_stateLock' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1823) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+
+Build FAILED.
+
+C:\hft_platform\risk\Hft.Risk\Kernel\GovernanceKernel.cs(44,17): error CA1822: Member 'IsStrategyApproved' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+C:\hft_platform\risk\Hft.Risk\Kernel\GovernanceKernel.cs(24,17): error CA1822: Member 'RequestOverride' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+C:\hft_platform\risk\Hft.Risk\Kernel\StressTestEngine.cs(36,18): error CA1822: Member 'SimulateMarketCrash' does not access instance data and can be marked as static (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+C:\hft_platform\risk\Hft.Risk\Kernel\RiskKernel.cs(19,29): error CA1823: Unused field '_stateLock' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1823) [C:\hft_platform\risk\Hft.Risk\Hft.Risk.csproj]
+    0 Warning(s)
+    4 Error(s)
+
+Time Elapsed 00:00:00.96

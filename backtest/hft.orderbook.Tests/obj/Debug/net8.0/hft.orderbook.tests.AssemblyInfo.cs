@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.orderbook.tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77e324a04a6e8b567641967eddebac26783804cb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b7e946456593905d5b148b1b392fc2b970780d")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.orderbook.tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.orderbook.tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

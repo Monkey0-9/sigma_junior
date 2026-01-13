@@ -33,10 +33,10 @@ public sealed class StressTestEngine : IRiskModel
         return new RiskCheckResult(true, "Passed Stress Tests", ModelId, 1.0, false);
     }
 
-    private bool SimulateMarketCrash(ParentOrder order, PortfolioState portfolio)
+    private static bool SimulateMarketCrash(ParentOrder order, PortfolioState portfolio)
     {
         // Simplified heuristic:
         // If order increases leverage beyond X threshold in a crash scenario
-        return true; 
+        return order != null && portfolio != null; 
     }
 }

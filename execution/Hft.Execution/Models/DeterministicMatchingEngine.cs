@@ -32,7 +32,7 @@ public sealed class DeterministicMatchingEngine : IMatchingEngine
     {
         // 1. Simulate Latency (Order arriving at exchange)
         double latencyInbound = _latencyModel.GenerateLatency();
-        long exchangeArrivalTime = _timeProvider.GetTimestamp() + (long)(latencyInbound * 10); // convert us to ticks (approx)
+        long exchangeArrivalTime = _timeProvider.EpochMicroseconds + (long)latencyInbound; // All us
 
         // 2. Queue Position
         int queuePos = _queueModel.EstimateInitialQueuePosition(order.Side, order.Price, liquidity);
@@ -78,7 +78,7 @@ public sealed class DeterministicMatchingEngine : IMatchingEngine
         }
     }
 
-    private bool IsMarketable(OrderQueueEntry order, MarketLiquidity liquidity)
+    private static bool IsMarketable(OrderQueueEntry order, MarketLiquidity liquidity)
     {
         // Simple check against best opposite price
         // (Assuming liquidity arrays are [best, next, ...])
@@ -92,7 +92,7 @@ public sealed class DeterministicMatchingEngine : IMatchingEngine
         }
     }
 
-    private double ComputeFee(double price, double quantity, bool isTaker)
+    private static double ComputeFee(double price, double quantity, bool isTaker)
     {
         // Simplified fee model
         double rate = isTaker ? 0.0003 : -0.0001; 

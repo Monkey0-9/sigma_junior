@@ -24,14 +24,14 @@ public sealed class GovernanceKernel
     public bool RequestOverride(string checkId, string reason, string requestor)
     {
         // 1. Log the request
-        // _auditLog.Log("GOVERNANCE_REQUEST", ...);
+        _auditLog.LogWarning("GOVERNANCE", $"Request: {checkId} by {requestor} reason: {reason}");
         
         // 2. In this automated simulation/demo, we deny by default unless in a specific test mode
         // Or strictly allow specific overrides
         
         if (checkId == "LIMIT_BREACH_SMALL" && reason == "HEDGING")
         {
-             // _auditLog.Log("GOVERNANCE_AUTO_APPROVE", ...);
+             _auditLog.LogInfo("GOVERNANCE", "Auto-Approved limit breach for hedging");
              return true;
         }
 
@@ -43,6 +43,7 @@ public sealed class GovernanceKernel
     /// </summary>
     public bool IsStrategyApproved(string strategyId, string version)
     {
+        _auditLog.LogInfo("GOVERNANCE", $"Checking strategy approval: {strategyId} v{version}");
         // Check against a secure database of signed binaries/configs
         return true; 
     }

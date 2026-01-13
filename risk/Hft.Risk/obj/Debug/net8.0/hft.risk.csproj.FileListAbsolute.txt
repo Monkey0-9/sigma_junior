@@ -1,9 +1,3 @@
-C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.csproj.AssemblyReference.cache
-C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.GeneratedMSBuildEditorConfig.editorconfig
-C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.AssemblyInfoInputs.cache
-C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.AssemblyInfo.cs
-C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.csproj.CoreCompileInputs.cache
-C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.sourcelink.json
 C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.risk.deps.json
 C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.risk.dll
 C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.risk.pdb
@@ -11,6 +5,12 @@ C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.core.dll
 C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.infra.dll
 C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.core.pdb
 C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.infra.pdb
+C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.csproj.AssemblyReference.cache
+C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.AssemblyInfoInputs.cache
+C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.AssemblyInfo.cs
+C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.csproj.CoreCompileInputs.cache
+C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.sourcelink.json
 C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.csproj.Up2Date
 C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\hft.risk.dll
 C:\hft_platform\risk\hft.risk\obj\Debug\net8.0\refint\hft.risk.dll

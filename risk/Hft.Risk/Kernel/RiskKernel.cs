@@ -16,7 +16,6 @@ public sealed class RiskKernel : IRiskKernel
     private readonly ConcurrentDictionary<string, IRiskModel> _models;
     private readonly IEventLogger _auditLog;
     private volatile GovernanceState _state;
-    private readonly object _stateLock = new object();
 
     public RiskKernel(IEventLogger auditLog)
     {
@@ -80,6 +79,7 @@ public sealed class RiskKernel : IRiskKernel
 
         if (!allowed)
         {
+            _auditLog.LogRiskEvent("KERNEL_VALIDATION", "REJECT", firstFailureReason);
             return new RiskCheckResult(false, firstFailureReason, "AGGREGATE_FAIL", 1.0, false);
         }
 
