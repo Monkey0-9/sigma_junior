@@ -74,7 +74,7 @@ namespace Hft.Routing
         public double? LimitPrice { get; init; }
 
         /// <summary>Order flags</summary>
-        public OrderFlags Flags { get; init; }
+        public OrderAttributes Flags { get; init; }
 
         /// <summary>Slice urgency (0-1)</summary>
         public double Urgency { get; init; }
@@ -91,7 +91,7 @@ namespace Hft.Routing
             OrderType orderType,
             TimeInForce tif,
             double? limitPrice,
-            OrderFlags flags,
+            OrderAttributes flags,
             double urgency,
             string reason)
         {
@@ -303,10 +303,10 @@ namespace Hft.Routing
             OrderType orderType = urgency > 0.7 ? OrderType.Market : OrderType.Limit;
 
             // Determine if we should use passive or aggressive
-            OrderFlags flags = OrderFlags.None;
+            OrderAttributes flags = OrderAttributes.None;
             if (parentOrder.Intent == OrderIntent.Passive && orderType == OrderType.Limit)
             {
-                flags |= OrderFlags.PostOnly;
+                flags |= OrderAttributes.PostOnly;
             }
 
             string reason = $"POV: {(_povPercentage * 100):F1}% × vol={volumeInterval} adj={_currentAdjustment:F2}";
@@ -441,10 +441,10 @@ namespace Hft.Routing
 
             OrderType orderType = urgency > 0.8 ? OrderType.Market : OrderType.Limit;
 
-            OrderFlags flags = OrderFlags.None;
+            OrderAttributes flags = OrderAttributes.None;
             if (parentOrder.Intent == OrderIntent.Passive && orderType == OrderType.Limit)
             {
-                flags |= OrderFlags.PostOnly;
+                flags |= OrderAttributes.PostOnly;
             }
 
             string reason = $"TWAP: interval {_currentInterval + 1}/{_intervalCount} adj={adjustment:F2}";
@@ -607,10 +607,10 @@ namespace Hft.Routing
 
             OrderType orderType = urgency > 0.85 ? OrderType.Market : OrderType.Limit;
 
-            OrderFlags flags = OrderFlags.None;
+            OrderAttributes flags = OrderAttributes.None;
             if (parentOrder.Intent == OrderIntent.Passive && orderType == OrderType.Limit)
             {
-                flags |= OrderFlags.PostOnly;
+                flags |= OrderAttributes.PostOnly;
             }
 
             string reason = $"VWAP: volWeight={volumeWeight:F3} target={targetSlice} adj={adjustedSlice}";
@@ -718,7 +718,7 @@ namespace Hft.Routing
                 orderType: orderType,
                 tif: TimeInForce.Day,
                 limitPrice: parentOrder.LimitPrice,
-                flags: OrderFlags.None,
+                flags: OrderAttributes.None,
                 urgency: urgency,
                 reason: reason);
         }

@@ -791,11 +791,11 @@ namespace Hft.Routing
             };
 
             // Determine flags based on strategy
-            OrderFlags flags = OrderFlags.None;
+            OrderAttributes flags = OrderAttributes.None;
             if (parentOrder.StrategyParameters.UseHiddenOrders)
-                flags |= OrderFlags.Hidden;
+                flags |= OrderAttributes.Hidden;
             if (parentOrder.Intent == OrderIntent.Passive && orderType == OrderType.Limit)
-                flags |= OrderFlags.PostOnly;
+                flags |= OrderAttributes.PostOnly;
 
             return ChildOrderSpec.Create(
                 venueId: score.VenueId,

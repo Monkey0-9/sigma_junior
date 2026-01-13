@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.backtest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77e324a04a6e8b567641967eddebac26783804cb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7033acd24ee071a946790eaf64bb77d62c3b71db")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.backtest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.backtest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

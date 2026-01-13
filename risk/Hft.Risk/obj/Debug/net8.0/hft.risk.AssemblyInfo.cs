@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.risk")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdd7efd4345cbabab19d1e23b10abde1fe175dac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7033acd24ee071a946790eaf64bb77d62c3b71db")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.risk")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.risk")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

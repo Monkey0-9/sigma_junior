@@ -4,6 +4,19 @@ using System.Collections.Generic;
 namespace Hft.Execution
 {
     /// <summary>
+    /// Parameters for the Almgren-Chriss optimization.
+    /// </summary>
+    public record AlmgrenChrissParameters(
+        double TotalQuantity,      // X: Total number of shares to trade
+        double TotalTimeMinutes,   // T: Total time allowed for execution
+        int Intervals,             // N: Number of discrete time intervals
+        double VolatilityMinutes,  // sigma: Volatility per minute
+        double RiskAversion,       // lambda: Risk aversion parameter
+        double TempImpactCoeff,    // eta: Temporary impact coefficient
+        double PermImpactCoeff     // gamma: Permanent impact coefficient
+    );
+
+    /// <summary>
     /// Implementation of the Almgren-Chriss optimal execution model.
     /// Calculates the optimal trading trajectory to minimize the sum of 
     /// transaction costs (market impact) and volatility risk.
@@ -11,23 +24,11 @@ namespace Hft.Execution
     public sealed class AlmgrenChrissOptimizer
     {
         /// <summary>
-        /// Parameters for the Almgren-Chriss optimization.
-        /// </summary>
-        public record Parameters(
-            double TotalQuantity,      // X: Total number of shares to trade
-            double TotalTimeMinutes,   // T: Total time allowed for execution
-            int Intervals,             // N: Number of discrete time intervals
-            double VolatilityMinutes,  // sigma: Volatility per minute
-            double RiskAversion,       // lambda: Risk aversion parameter
-            double TempImpactCoeff,    // eta: Temporary impact coefficient
-            double PermImpactCoeff     // gamma: Permanent impact coefficient
-        );
-
-        /// <summary>
         /// Calculates the optimal schedule (number of shares to trade in each interval).
         /// </summary>
-        public double[] CalculateOptimalSchedule(Parameters p)
+        public static double[] CalculateOptimalSchedule(AlmgrenChrissParameters p)
         {
+            ArgumentNullException.ThrowIfNull(p);
             if (p.Intervals <= 0) throw new ArgumentException("Intervals must be > 0", nameof(p));
             
             double tau = p.TotalTimeMinutes / p.Intervals; // Time per interval
@@ -67,8 +68,10 @@ namespace Hft.Execution
         /// <summary>
         /// Calculates the expected cost (shortfall) of the optimal trajectory.
         /// </summary>
-        public double CalculateExpectedShortfall(Parameters p, double[] schedule)
+        public static double CalculateExpectedShortfall(AlmgrenChrissParameters p, double[] schedule)
         {
+            ArgumentNullException.ThrowIfNull(p);
+            ArgumentNullException.ThrowIfNull(schedule);
             double tau = p.TotalTimeMinutes / p.Intervals;
             double shortfall = 0;
 

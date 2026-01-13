@@ -39,7 +39,8 @@ namespace Hft.Backtest
             var executedOrders = new MetricsCounter("bt_orders_executed");
             var ordersGenerated = new MetricsCounter("bt_orders_generated");
 
-            _strategy = new MarketMakerStrategy(_preRiskRing, ordersGenerated, _position);
+            var qualityManager = new SignalQualityManager();
+            _strategy = new MarketMakerStrategy(_preRiskRing, ordersGenerated, _position, qualityManager);
             _riskEngine = new PreTradeRiskEngine(_preRiskRing, _approvedRing, _position, ordersApproved, ordersRejected, limits, _logger);
             _executionEngine = new ExecutionEngine(_approvedRing, _pnlEngine, executedOrders, _logger) 
             { 

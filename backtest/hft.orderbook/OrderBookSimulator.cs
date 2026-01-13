@@ -473,7 +473,7 @@ namespace Hft.OrderBook
         public void Reset()
         {
             _book.CurrentTimestamp = 0;
-            _latencyInjector.Reset();
+            LatencyInjector.Reset();
             _fillBuffer.Clear();
         }
 

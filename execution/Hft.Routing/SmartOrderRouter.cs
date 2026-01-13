@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Hft.Core;
 using Hft.OrderBook;
@@ -369,7 +370,7 @@ namespace Hft.Routing
         public TimeInForce TimeInForce { get; init; }
 
         /// <summary>Order flags (hidden, post-only, etc.)</summary>
-        public OrderFlags Flags { get; init; }
+        public OrderAttributes Flags { get; init; }
 
         /// <summary>Expected fill probability at this venue</summary>
         public double FillProbability { get; init; }
@@ -393,7 +394,7 @@ namespace Hft.Routing
             int quantity,
             double? limitPrice = null,
             TimeInForce tif = TimeInForce.Day,
-            OrderFlags flags = OrderFlags.None,
+            OrderAttributes flags = OrderAttributes.None,
             double fillProbability = 1.0,
             double priceImprovementBps = 0,
             double feesBps = 0,

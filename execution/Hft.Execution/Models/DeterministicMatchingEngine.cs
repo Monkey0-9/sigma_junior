@@ -32,6 +32,7 @@ public sealed class DeterministicMatchingEngine : IMatchingEngine
     {
         // 1. Simulate Latency (Order arriving at exchange)
         double latencyInbound = _latencyModel.GenerateLatency();
+        ArgumentNullException.ThrowIfNull(liquidity);
         long exchangeArrivalTime = _timeProvider.EpochMicroseconds + (long)latencyInbound; // All us
 
         // 2. Queue Position
@@ -84,11 +85,11 @@ public sealed class DeterministicMatchingEngine : IMatchingEngine
         // (Assuming liquidity arrays are [best, next, ...])
         if (order.Side == OrderSide.Buy)
         {
-            return liquidity.AskDepth.Length > 0 && order.Price >= 100; // Placeholder price check
+            return liquidity.AskDepth.Count > 0 && order.Price >= 100; // Placeholder price check
         }
         else
         {
-            return liquidity.BidDepth.Length > 0 && order.Price <= 100; // Placeholder
+            return liquidity.BidDepth.Count > 0 && order.Price <= 100; // Placeholder
         }
     }
 

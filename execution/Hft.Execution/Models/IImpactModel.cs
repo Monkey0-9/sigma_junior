@@ -7,8 +7,8 @@ namespace Hft.Execution.Models;
 /// GRANDMASTER: Immutable record for deterministic impact modeling.
 /// </summary>
 public record MarketLiquidity(
-    double[] BidDepth,
-    double[] AskDepth,
+    IReadOnlyList<double> BidDepth,
+    IReadOnlyList<double> AskDepth,
     double VWAPWindow,
     double Imbalance
 );

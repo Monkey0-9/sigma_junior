@@ -137,7 +137,8 @@ namespace Hft.Routing
                 if (_config.LatencyMedianUs > 0)
                 {
                     latencyUs = SampleLatency();
-                    SpinWait.SpinOnce(); // Simulate latency
+                    var spinWait = new SpinWait();
+                    spinWait.SpinOnce(); // Simulate latency
                 }
 
                 // Check rate limit

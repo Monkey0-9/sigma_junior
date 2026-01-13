@@ -1,0 +1,6 @@
+C:\hft_platform\execution\Hft.Routing\obj\release\net8.0\Hft.Routing.csproj.AssemblyReference.cache
+C:\hft_platform\execution\Hft.Routing\obj\release\net8.0\Hft.Routing.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\execution\Hft.Routing\obj\release\net8.0\Hft.Routing.AssemblyInfoInputs.cache
+C:\hft_platform\execution\Hft.Routing\obj\release\net8.0\Hft.Routing.AssemblyInfo.cs
+C:\hft_platform\execution\Hft.Routing\obj\release\net8.0\Hft.Routing.csproj.CoreCompileInputs.cache
+C:\hft_platform\execution\Hft.Routing\obj\release\net8.0\Hft.Routing.sourcelink.json

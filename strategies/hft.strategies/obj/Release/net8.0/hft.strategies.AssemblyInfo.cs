@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.strategies")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b7e946456593905d5b148b1b392fc2b970780d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7033acd24ee071a946790eaf64bb77d62c3b71db")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.strategies")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.strategies")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
