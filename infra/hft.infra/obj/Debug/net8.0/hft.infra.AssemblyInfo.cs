@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.infra")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77e324a04a6e8b567641967eddebac26783804cb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5b0f400b661f34734d20e27d2b59c85d430d08f3")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.infra")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.infra")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

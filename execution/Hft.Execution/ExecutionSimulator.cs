@@ -8,6 +8,7 @@ namespace Hft.Execution
     /// <summary>
     /// Advanced Execution Simulator for testing optimal execution strategies.
     /// Simulates parent order execution against a realistic market impact model.
+    /// GRANDMASTER: Uses IRandomProvider for deterministic replay.
     /// </summary>
     public sealed class ExecutionSimulator
     {
@@ -15,7 +16,8 @@ namespace Hft.Execution
             double TotalFilled,
             double AveragePrice,
             double ImplementationShortfallBps,
-            List<FillRecord> Fills
+            List<FillRecord> Fills,
+            int Seed  // GRANDMASTER: Return seed for replay
         );
 
         public record MarketState(
@@ -26,7 +28,16 @@ namespace Hft.Execution
             double PermImpactCoeff
         );
 
-        private readonly Random _random = new(42); // Deterministic for simulation
+        private readonly IRandomProvider _random;
+
+        /// <summary>
+        /// Initializes a new instance with dependency-injected randomness.
+        /// GRANDMASTER: For deterministic simulations, use DeterministicRandomProvider.
+        /// </summary>
+        public ExecutionSimulator(IRandomProvider? randomProvider = null)
+        {
+            _random = randomProvider ?? new DeterministicRandomProvider(42);
+        }
 
         /// <summary>
         /// Simulates execution of a parent order using a provided schedule.
@@ -94,7 +105,8 @@ namespace Hft.Execution
                 totalFilled,
                 averagePrice,
                 IS * 10000.0,
-                fills
+                fills,
+                _random is DeterministicRandomProvider det ? det.Seed : 0
             );
         }
     }
