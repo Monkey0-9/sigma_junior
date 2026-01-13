@@ -13,5 +13,5 @@ build_property.RootNamespace = hft.risk
 build_property.ProjectDir = C:\hft_platform\risk\hft.risk\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 

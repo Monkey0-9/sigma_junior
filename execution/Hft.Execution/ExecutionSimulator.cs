@@ -6,28 +6,35 @@ using Hft.Core;
 namespace Hft.Execution
 {
     /// <summary>
+    /// Result of an execution simulation.
+    /// GRANDMASTER: Immutable record with seed for replay.
+    /// </summary>
+    public record SimulationResult(
+        double TotalFilled,
+        double AveragePrice,
+        double ImplementationShortfallBps,
+        IReadOnlyList<FillRecord> Fills,
+        int Seed
+    );
+
+    /// <summary>
+    /// Market state parameters for execution simulation.
+    /// </summary>
+    public record MarketState(
+        double MidPrice,
+        double SpreadBps,
+        double VolatilityMinutes,
+        double TempImpactCoeff,
+        double PermImpactCoeff
+    );
+
+    /// <summary>
     /// Advanced Execution Simulator for testing optimal execution strategies.
     /// Simulates parent order execution against a realistic market impact model.
     /// GRANDMASTER: Uses IRandomProvider for deterministic replay.
     /// </summary>
     public sealed class ExecutionSimulator
     {
-        public record SimulationResult(
-            double TotalFilled,
-            double AveragePrice,
-            double ImplementationShortfallBps,
-            List<FillRecord> Fills,
-            int Seed  // GRANDMASTER: Return seed for replay
-        );
-
-        public record MarketState(
-            double MidPrice,
-            double SpreadBps,
-            double VolatilityMinutes,
-            double TempImpactCoeff,
-            double PermImpactCoeff
-        );
-
         private readonly IRandomProvider _random;
 
         /// <summary>
@@ -48,6 +55,9 @@ namespace Hft.Execution
             double[] schedule,
             MarketState market)
         {
+            ArgumentNullException.ThrowIfNull(schedule);
+            ArgumentNullException.ThrowIfNull(market);
+
             double currentMidPrice = market.MidPrice;
             double arrivalPrice = market.MidPrice;
             double totalFilled = 0;
@@ -105,7 +115,7 @@ namespace Hft.Execution
                 totalFilled,
                 averagePrice,
                 IS * 10000.0,
-                fills,
+                fills.AsReadOnly(),
                 _random is DeterministicRandomProvider det ? det.Seed : 0
             );
         }
