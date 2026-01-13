@@ -8,6 +8,7 @@ C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.GeneratedMSBuildEdito
 C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.AssemblyInfoInputs.cache
 C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.AssemblyInfo.cs
 C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.csproj.CoreCompileInputs.cache
+C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.sourcelink.json
 C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.csproj.Up2Date
 C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\hft.feeds.dll
 C:\hft_platform\feeds\hft.feeds\obj\Debug\net8.0\refint\hft.feeds.dll

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hft.core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77e324a04a6e8b567641967eddebac26783804cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

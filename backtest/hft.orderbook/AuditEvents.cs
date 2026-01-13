@@ -12,52 +12,23 @@ namespace Hft.OrderBook
     /// Performance: Blittable struct, 32 bytes.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct AuditEvent
+    public readonly struct AuditEvent : IEquatable<AuditEvent>
     {
-        /// <summary>Event type (1 byte + 3 padding)</summary>
         public OrderEventType EventType { get; }
-
-        /// <summary>Event sequence number (monotonically increasing)</summary>
         public long SequenceNumber { get; }
-
-        /// <summary>Event timestamp (microseconds since epoch)</summary>
         public long Timestamp { get; }
-
-        /// <summary>Order ID involved (0 if not applicable)</summary>
         public long OrderId { get; }
-
-        /// <summary>Instrument/symbol ID</summary>
         public long InstrumentId { get; }
-
-        /// <summary>Event-specific data (packed)</summary>
         public long Data1 { get; }
-
-        /// <summary>Event-specific data (packed)</summary>
         public long Data2 { get; }
-
-        /// <summary>Event-specific data (packed)</summary>
         public long Data3 { get; }
-
-        /// <summary>Event-specific data (packed)</summary>
         public long Data4 { get; }
-
-        // Padding to 32 bytes
         private readonly long _padding1;
         private readonly long _padding2;
         private readonly long _padding3;
         private readonly long _padding4;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public AuditEvent(
-            OrderEventType eventType,
-            long sequenceNumber,
-            long timestamp,
-            long orderId,
-            long instrumentId,
-            long data1,
-            long data2,
-            long data3,
-            long data4)
+        public AuditEvent(OrderEventType eventType, long sequenceNumber, long timestamp, long orderId, long instrumentId, long data1, long data2, long data3, long data4)
         {
             EventType = eventType;
             SequenceNumber = sequenceNumber;
@@ -70,6 +41,13 @@ namespace Hft.OrderBook
             Data4 = data4;
             _padding1 = _padding2 = _padding3 = _padding4 = 0;
         }
+
+        public override bool Equals(object? obj) => obj is AuditEvent other && Equals(other);
+        public bool Equals(AuditEvent other) => SequenceNumber == other.SequenceNumber && EventType == other.EventType;
+        public override int GetHashCode() => HashCode.Combine(SequenceNumber, EventType);
+        public static bool operator ==(AuditEvent left, AuditEvent right) => left.Equals(right);
+        public static bool operator !=(AuditEvent left, AuditEvent right) => !left.Equals(right);
+
 
         /// <summary>
         /// Creates an Order Add event.
@@ -85,7 +63,7 @@ namespace Hft.OrderBook
             int quantity,
             OrderSide side,
             OrderType type,
-            OrderFlags flags,
+            OrderAttributes flags,
             int queuePosition)
         {
             // Pack side, type, flags into Data3 (8 bits each: side=1, type=4, flags=3)
@@ -280,21 +258,22 @@ namespace Hft.OrderBook
     /// <summary>
     /// Reject reason codes for order rejections.
     /// </summary>
-    public enum RejectReason : byte
+    public enum RejectReason
     {
-        Unknown = 0,
-        InvalidOrderId = 1,
-        InvalidPrice = 2,
-        InvalidQuantity = 3,
-        InvalidSide = 4,
-        InsufficientFunds = 5,
-        PositionLimitExceeded = 6,
-        OrderWouldCross = 7,
-        PostOnlyWouldTake = 8,
-        TradingHalt = 9,
-        MarketClosed = 10,
-        IcebergPeakExceeded = 11,
-        SelfTradePrevention = 12
+        None = 0,
+        Unknown = 1,
+        InvalidOrderId = 2,
+        InvalidPrice = 3,
+        InvalidQuantity = 4,
+        InvalidSide = 5,
+        InsufficientFunds = 6,
+        PositionLimitExceeded = 7,
+        OrderWouldCross = 8,
+        PostOnlyWouldTake = 9,
+        TradingHalt = 10,
+        MarketClosed = 11,
+        IcebergPeakExceeded = 12,
+        SelfTradePrevention = 13
     }
 
     /// <summary>
@@ -302,62 +281,24 @@ namespace Hft.OrderBook
     /// Contains all information needed for P&L and audit.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct FillRecord
+    public readonly struct FillRecord : IEquatable<FillRecord>
     {
-        /// <summary>Unique fill ID</summary>
         public long FillId { get; }
-
-        /// <summary>Sequence number of the fill event</summary>
         public long SequenceNumber { get; }
-
-        /// <summary>Timestamp of the fill (microseconds)</summary>
         public long Timestamp { get; }
-
-        /// <summary>Aggressive order ID</summary>
         public long AggressorOrderId { get; }
-
-        /// <summary>Passive order ID (the order that was filled)</summary>
         public long PassiveOrderId { get; }
-
-        /// <summary>Instrument ID</summary>
         public long InstrumentId { get; }
-
-        /// <summary>Fill price</summary>
         public long Price { get; }
-
-        /// <summary>Fill quantity</summary>
         public int Quantity { get; }
-
-        /// <summary>Aggressive order side</summary>
         public OrderSide Side { get; }
-
-        /// <summary>Was this a hidden order fill?</summary>
         public bool IsHidden { get; }
-
-        /// <summary>Was this a mid-point match?</summary>
         public bool IsMidPoint { get; }
-
-        /// <summary>Liability (liquidity providing vs taking)</summary>
         public LiquidityType Liquidity { get; }
-
-        // Padding
         private readonly long _padding1;
         private readonly long _padding2;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public FillRecord(
-            long fillId,
-            long sequenceNumber,
-            long timestamp,
-            long aggressorOrderId,
-            long passiveOrderId,
-            long instrumentId,
-            long price,
-            int quantity,
-            OrderSide side,
-            bool isHidden,
-            bool isMidPoint,
-            LiquidityType liquidity)
+        public FillRecord(long fillId, long sequenceNumber, long timestamp, long aggressorOrderId, long passiveOrderId, long instrumentId, long price, int quantity, OrderSide side, bool isHidden, bool isMidPoint, LiquidityType liquidity)
         {
             FillId = fillId;
             SequenceNumber = sequenceNumber;
@@ -373,6 +314,13 @@ namespace Hft.OrderBook
             Liquidity = liquidity;
             _padding1 = _padding2 = 0;
         }
+
+        public override bool Equals(object? obj) => obj is FillRecord other && Equals(other);
+        public bool Equals(FillRecord other) => FillId == other.FillId;
+        public override int GetHashCode() => FillId.GetHashCode();
+        public static bool operator ==(FillRecord left, FillRecord right) => left.Equals(right);
+        public static bool operator !=(FillRecord left, FillRecord right) => !left.Equals(right);
+
 
         /// <summary>
         /// Creates a fill record from an audit event.
@@ -402,25 +350,20 @@ namespace Hft.OrderBook
         /// <summary>
         /// Returns the signed quantity (positive for buy, negative for sell).
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long SignedQuantity => Side == OrderSide.Buy ? Quantity : -Quantity;
 
         /// <summary>
         /// Returns the notional value of this fill.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Notional => Price * Quantity;
     }
 
     /// <summary>
     /// Liquidity type for fills.
     /// </summary>
-    public enum LiquidityType : byte
+    public enum LiquidityType
     {
-        /// <summary>Maker (provided liquidity, passive order)</summary>
         Maker = 0,
-        
-        /// <summary>Taker (removed liquidity, aggressive order)</summary>
         Taker = 1
     }
 
@@ -428,68 +371,27 @@ namespace Hft.OrderBook
     /// Order book snapshot for checkpointing and state save/restore.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct OrderBookSnapshot
+    public readonly struct OrderBookSnapshot : IEquatable<OrderBookSnapshot>
     {
-        /// <summary>Snapshot version (for format compatibility)</summary>
         public int Version { get; }
-
-        /// <summary>Instrument ID</summary>
         public long InstrumentId { get; }
-
-        /// <summary>Snapshot timestamp</summary>
         public long Timestamp { get; }
-
-        /// <summary>Sequence number at snapshot</summary>
         public long SequenceNumber { get; }
-
-        /// <summary>Best bid price</summary>
         public long BestBidPrice { get; }
-
-        /// <summary>Best bid size</summary>
         public int BestBidSize { get; }
-
-        /// <summary>Best ask price</summary>
         public long BestAskPrice { get; }
-
-        /// <summary>Best ask size</summary>
         public int BestAskSize { get; }
-
-        /// <summary>Number of price levels on bid side</summary>
         public int BidLevelCount { get; }
-
-        /// <summary>Number of price levels on ask side</summary>
         public int AskLevelCount { get; }
-
-        /// <summary>Total number of active orders</summary>
         public int TotalOrderCount { get; }
-
-        /// <summary>Total buy-side quantity</summary>
         public long TotalBidQuantity { get; }
-
-        /// <summary>Total sell-side quantity</summary>
         public long TotalAskQuantity { get; }
-
-        // Padding
         private readonly long _padding1;
         private readonly long _padding2;
         private readonly long _padding3;
         private readonly long _padding4;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OrderBookSnapshot(
-            int version,
-            long instrumentId,
-            long timestamp,
-            long sequenceNumber,
-            long bestBidPrice,
-            int bestBidSize,
-            long bestAskPrice,
-            int bestAskSize,
-            int bidLevelCount,
-            int askLevelCount,
-            int totalOrderCount,
-            long totalBidQuantity,
-            long totalAskQuantity)
+        public OrderBookSnapshot(int version, long instrumentId, long timestamp, long sequenceNumber, long bestBidPrice, int bestBidSize, long bestAskPrice, int bestAskSize, int bidLevelCount, int askLevelCount, int totalOrderCount, long totalBidQuantity, long totalAskQuantity)
         {
             Version = version;
             InstrumentId = instrumentId;
@@ -506,6 +408,13 @@ namespace Hft.OrderBook
             TotalAskQuantity = totalAskQuantity;
             _padding1 = _padding2 = _padding3 = _padding4 = 0;
         }
+
+        public override bool Equals(object? obj) => obj is OrderBookSnapshot other && Equals(other);
+        public bool Equals(OrderBookSnapshot other) => SequenceNumber == other.SequenceNumber && Timestamp == other.Timestamp;
+        public override int GetHashCode() => HashCode.Combine(SequenceNumber, Timestamp);
+        public static bool operator ==(OrderBookSnapshot left, OrderBookSnapshot right) => left.Equals(right);
+        public static bool operator !=(OrderBookSnapshot left, OrderBookSnapshot right) => !left.Equals(right);
+
 
         /// <summary>
         /// Current snapshot version.

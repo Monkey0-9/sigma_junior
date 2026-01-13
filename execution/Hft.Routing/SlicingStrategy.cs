@@ -641,14 +641,103 @@ namespace Hft.Routing
     }
 
     /// <summary>
+    /// Almgren-Chriss Optimal Execution strategy.
+    /// 
+    /// Minimized Cost = Permanent Impact + Temporary Impact + Volatility Risk.
+    /// 
+    /// Optimal Trajectory:
+    ///   x_k = X * sinh(kappa * (T - t_k)) / sinh(kappa * T)
+    /// 
+    /// Where:
+    ///   kappa = sqrt(lambda * sigma^2 / eta)
+    ///   lambda: Risk aversion
+    ///   sigma: Volatility
+    ///   eta: Temporary impact
+    /// </summary>
+    public sealed class AlmgrenChrissSlicingStrategy : ISlicingStrategy
+    {
+        private readonly double _kappa;
+        private readonly double _totalQuantity;
+        private readonly long _totalTime;
+        private int _lastScheduledQuantity;
+
+        public ExecutionStrategy StrategyType => ExecutionStrategy.AlmgrenChriss;
+
+        public AlmgrenChrissSlicingStrategy(ParentOrder parentOrder, long totalTime)
+        {
+            var p = parentOrder.StrategyParameters;
+            double sigma = p.DailyVolatility;
+            double lambda = p.RiskAversion;
+            double eta = p.TemporaryImpact;
+
+            // kappa = sqrt(lambda * sigma^2 / eta)
+            _kappa = Math.Sqrt((lambda * sigma * sigma) / Math.Max(1e-9, eta));
+            _totalQuantity = parentOrder.TotalQuantity;
+            _totalTime = Math.Max(1, totalTime);
+            _lastScheduledQuantity = (int)_totalQuantity;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SliceSpec ComputeSlice(
+            ParentOrder parentOrder,
+            int remainingQuantity,
+            MarketDataSnapshot marketData,
+            long elapsedTime,
+            long totalTime)
+        {
+            double t_k = elapsedTime;
+            double T = _totalTime;
+
+            // Calculate x_k: remaining quantity according to optimal trajectory
+            double sinhKappaT = Math.Sinh(_kappa * T);
+            double sinhKappaTMinusTk = Math.Sinh(_kappa * Math.Max(0, T - t_k));
+
+            double x_k = sinhKappaT > 0 
+                ? _totalQuantity * (sinhKappaTMinusTk / sinhKappaT)
+                : _totalQuantity * (1.0 - (t_k / T)); // Fallback to linear (TWAP) if kappa is 0
+
+            int targetRemaining = (int)Math.Round(x_k);
+            int sliceSize = _lastScheduledQuantity - targetRemaining;
+
+            // Ensure slice is positive and respects constraints
+            sliceSize = Math.Max(parentOrder.StrategyParameters.MinSliceSize, sliceSize);
+            sliceSize = Math.Min(sliceSize, remainingQuantity);
+
+            _lastScheduledQuantity = targetRemaining;
+
+            // Dynamic urgency based on drift from trajectory
+            double drift = (remainingQuantity - x_k) / _totalQuantity;
+            double urgency = Math.Min(1.0, 0.5 + drift * 5.0); // Increase urgency if behind
+
+            OrderType orderType = urgency > 0.8 ? OrderType.Market : OrderType.Limit;
+
+            string reason = $"AC: kappa={_kappa:F6} target_rem={targetRemaining} drift={drift:F4}";
+
+            return SliceSpec.Create(
+                quantity: sliceSize,
+                orderType: orderType,
+                tif: TimeInForce.Day,
+                limitPrice: parentOrder.LimitPrice,
+                flags: OrderFlags.None,
+                urgency: urgency,
+                reason: reason);
+        }
+
+        public void UpdateFeedback(SliceFeedback feedback) { }
+
+        public void Reset() { }
+    }
+
+    /// <summary>
     /// Factory for creating slicing strategies.
     /// </summary>
     public static class SlicingStrategyFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISlicingStrategy Create(ExecutionStrategy strategy, StrategyParameters? parameters = null)
+        public static ISlicingStrategy Create(ParentOrder parentOrder, long totalTimeUs)
         {
-            var params_ = parameters ?? StrategyParameters.Default();
+            var strategy = parentOrder.Strategy;
+            var params_ = parentOrder.StrategyParameters;
 
             return strategy switch
             {
@@ -665,6 +754,9 @@ namespace Hft.Routing
                 ExecutionStrategy.VWAP => new VwapSlicingStrategy(
                     participationRate: params_.VwapParticipationLimit,
                     intervalCount: params_.TwapIntervalCount),
+
+                ExecutionStrategy.AlmgrenChriss => new AlmgrenChrissSlicingStrategy(
+                    parentOrder, totalTimeUs),
 
                 _ => new PovSlicingStrategy()
             };

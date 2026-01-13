@@ -1,13 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <EmbeddedResource Update="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Strings.Designer.cs">
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <ProjectReference Include="..\core\hft.core\hft.core.csproj" />
     <ProjectReference Include="..\feeds\hft.feeds\hft.feeds.csproj" />
     <ProjectReference Include="..\strategies\hft.strategies\hft.strategies.csproj" />
     <ProjectReference Include="..\risk\hft.risk\hft.risk.csproj" />
     <ProjectReference Include="..\execution\hft.execution\hft.execution.csproj" />
+    <ProjectReference Include="..\execution\Hft.Routing\Hft.Routing.csproj" />
     <ProjectReference Include="..\infra\hft.infra\hft.infra.csproj" />
+    <ProjectReference Include="..\src\Hft.FIOS\Hft.FIOS.csproj" />
     <ProjectReference Include="..\backtest\hft.backtest\hft.backtest.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -15,6 +28,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- GRANDMASTER: Treat warnings as errors for CI quality gate -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- GRANDMASTER: Enable latest analyzers for comprehensive code quality -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
+
+  <Target Name="KillRunnerPreBuild" BeforeTargets="BeforeBuild">
+    <Message Importance="High" Text="[INSTITUTIONAL] Ensuring no running Hft.Runner instances before build..." />
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -File ..\scripts\kill-runner.ps1" IgnoreExitCode="true" />
+  </Target>
 
 </Project>

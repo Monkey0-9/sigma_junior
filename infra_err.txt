@@ -1,0 +1,17 @@
+﻿  Determining projects to restore...
+  Restored c:\hft_platform\core\hft.core\hft.core.csproj (in 4.23 sec).
+  1 of 2 projects are up-to-date for restore.
+  hft.core -> c:\hft_platform\core\hft.core\bin\Debug\net8.0\hft.core.dll
+c:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(45,17): error CA1031: Modify 'FlushLoop' to catch a more specific allowed exception type, or rethrow the exception (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1031) [c:\hft_platform\infra\hft.infra\hft.infra.csproj]
+c:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(72,34): error CA2234: Modify 'ClickHouseExporter.FlushMetricsAsync()' to call 'HttpClient.PostAsync(Uri, HttpContent)' instead of 'HttpClient.PostAsync(string, HttpContent)' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2234) [c:\hft_platform\infra\hft.infra\hft.infra.csproj]
+c:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(71,27): error CA2000: Call System.IDisposable.Dispose on object created by 'new StringContent(sb.ToString(), Encoding.UTF8, "text/plain")' before all references to it are out of scope (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000) [c:\hft_platform\infra\hft.infra\hft.infra.csproj]
+
+Build FAILED.
+
+c:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(45,17): error CA1031: Modify 'FlushLoop' to catch a more specific allowed exception type, or rethrow the exception (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1031) [c:\hft_platform\infra\hft.infra\hft.infra.csproj]
+c:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(72,34): error CA2234: Modify 'ClickHouseExporter.FlushMetricsAsync()' to call 'HttpClient.PostAsync(Uri, HttpContent)' instead of 'HttpClient.PostAsync(string, HttpContent)' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2234) [c:\hft_platform\infra\hft.infra\hft.infra.csproj]
+c:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(71,27): error CA2000: Call System.IDisposable.Dispose on object created by 'new StringContent(sb.ToString(), Encoding.UTF8, "text/plain")' before all references to it are out of scope (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000) [c:\hft_platform\infra\hft.infra\hft.infra.csproj]
+    0 Warning(s)
+    3 Error(s)
+
+Time Elapsed 00:00:26.36

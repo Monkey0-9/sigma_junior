@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Hft.Core;
-using Hft.Core.RingBuffer; // NEW namespace
 using Hft.Risk;
 
 namespace Hft.Benchmarks
@@ -9,7 +8,7 @@ namespace Hft.Benchmarks
     [MemoryDiagnoser]
     public class RingBufferBenchmark
     {
-        private LockFreeRingBuffer<int> _ring;
+        private LockFreeRingBuffer<int>? _ring;
         private int _data = 42;
 
         [GlobalSetup]
@@ -19,14 +18,14 @@ namespace Hft.Benchmarks
         }
 
         [Benchmark]
-        public void TryWrite_TryRead()
+        public void TryWriteTryRead()
         {
-            _ring.TryWrite(_data);
-            _ring.TryRead(out _);
+            _ring!.TryWrite(_data);
+            _ring!.TryRead(out _);
         }
     }
 
-    public class Program
+    internal static class Program
     {
         public static void Main(string[] args)
         {
@@ -34,3 +33,4 @@ namespace Hft.Benchmarks
         }
     }
 }
+

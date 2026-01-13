@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Hft.Core;
-using Hft.Core.RingBuffer;
 using Hft.OrderBook;
 using Hft.Risk;
 

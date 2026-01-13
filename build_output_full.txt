@@ -1,0 +1,47 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\hft_platform\core\hft.core\Fill.cs(218,54): warning CS0169: The field 'Fill.FillIdGenerator._pad4' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,33): warning CS0169: The field 'Fill.FillIdGenerator._pad1' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,75): warning CS0169: The field 'Fill.FillIdGenerator._pad7' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,72): warning CS0169: The field 'Fill.FillIdGenerator._pad14' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,64): warning CS0169: The field 'Fill.FillIdGenerator._pad13' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,68): warning CS0169: The field 'Fill.FillIdGenerator._pad6' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,48): warning CS0169: The field 'Fill.FillIdGenerator._pad11' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,80): warning CS0169: The field 'Fill.FillIdGenerator._pad15' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,33): warning CS0169: The field 'Fill.FillIdGenerator._pad9' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,82): warning CS0169: The field 'Fill.FillIdGenerator._pad8' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,47): warning CS0169: The field 'Fill.FillIdGenerator._pad3' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,40): warning CS0169: The field 'Fill.FillIdGenerator._pad10' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,61): warning CS0169: The field 'Fill.FillIdGenerator._pad5' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,56): warning CS0169: The field 'Fill.FillIdGenerator._pad12' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,88): warning CS0169: The field 'Fill.FillIdGenerator._pad16' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,40): warning CS0169: The field 'Fill.FillIdGenerator._pad2' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+  hft.core -> C:\hft_platform\core\hft.core\bin\Debug\net8.0\hft.core.dll
+  hft.feeds -> C:\hft_platform\feeds\hft.feeds\bin\Debug\net8.0\hft.feeds.dll
+  hft.strategies -> C:\hft_platform\strategies\hft.strategies\bin\Debug\net8.0\hft.strategies.dll
+  hft.ml -> C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.ml.dll
+  hft.risk -> C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.risk.dll
+  Hft.Benchmarks -> C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks.dll
+
+Build succeeded.
+
+C:\hft_platform\core\hft.core\Fill.cs(218,54): warning CS0169: The field 'Fill.FillIdGenerator._pad4' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,33): warning CS0169: The field 'Fill.FillIdGenerator._pad1' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,75): warning CS0169: The field 'Fill.FillIdGenerator._pad7' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,72): warning CS0169: The field 'Fill.FillIdGenerator._pad14' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,64): warning CS0169: The field 'Fill.FillIdGenerator._pad13' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,68): warning CS0169: The field 'Fill.FillIdGenerator._pad6' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,48): warning CS0169: The field 'Fill.FillIdGenerator._pad11' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,80): warning CS0169: The field 'Fill.FillIdGenerator._pad15' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,33): warning CS0169: The field 'Fill.FillIdGenerator._pad9' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,82): warning CS0169: The field 'Fill.FillIdGenerator._pad8' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,47): warning CS0169: The field 'Fill.FillIdGenerator._pad3' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,40): warning CS0169: The field 'Fill.FillIdGenerator._pad10' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,61): warning CS0169: The field 'Fill.FillIdGenerator._pad5' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,56): warning CS0169: The field 'Fill.FillIdGenerator._pad12' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(219,88): warning CS0169: The field 'Fill.FillIdGenerator._pad16' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+C:\hft_platform\core\hft.core\Fill.cs(218,40): warning CS0169: The field 'Fill.FillIdGenerator._pad2' is never used [C:\hft_platform\core\hft.core\hft.core.csproj]
+    16 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.34

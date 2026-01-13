@@ -10,6 +10,7 @@ C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.strategies.Genera
 C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.strategies.AssemblyInfoInputs.cache
 C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.strategies.AssemblyInfo.cs
 C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.strategies.csproj.CoreCompileInputs.cache
+C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.strategies.sourcelink.json
 C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.stra.6DD66C03.Up2Date
 C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\hft.strategies.dll
 C:\hft_platform\strategies\hft.strategies\obj\Debug\net8.0\refint\hft.strategies.dll

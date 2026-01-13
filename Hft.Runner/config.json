@@ -1,0 +1,24 @@
+{
+  "Network": {
+    "UdpPort": 5005,
+    "MetricsPort": 9180
+  },
+  "Risk": {
+    "MaxOrderQty": 100,
+    "MaxPosition": 500,
+    "MaxOrdersPerSec": 50,
+    "MaxNotionalPerOrder": 20000
+  },
+  "Execution": {
+    "Strategy": "AlmgrenChriss",
+    "RiskAversion": 1e-6,
+    "DailyVolatility": 0.02,
+    "TemporaryImpact": 0.1,
+    "PermanentImpact": 0.05
+  },
+  "Health": {
+    "MaxP99LatencyLimit": 500.0,
+    "MinFillRateLimit": 0.5,
+    "MaxRiskRejectRate": 0.05
+  }
+}

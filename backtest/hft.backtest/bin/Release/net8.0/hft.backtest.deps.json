@@ -1,0 +1,128 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "hft.backtest/1.0.0": {
+        "dependencies": {
+          "hft.core": "1.0.0",
+          "hft.execution": "1.0.0",
+          "hft.feeds": "1.0.0",
+          "hft.infra": "1.0.0",
+          "hft.risk": "1.0.0",
+          "hft.strategies": "1.0.0"
+        },
+        "runtime": {
+          "hft.backtest.dll": {}
+        }
+      },
+      "hft.core/1.0.0": {
+        "runtime": {
+          "hft.core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "hft.execution/1.0.0": {
+        "dependencies": {
+          "hft.core": "1.0.0",
+          "hft.strategies": "1.0.0"
+        },
+        "runtime": {
+          "hft.execution.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "hft.feeds/1.0.0": {
+        "dependencies": {
+          "hft.core": "1.0.0"
+        },
+        "runtime": {
+          "hft.feeds.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "hft.infra/1.0.0": {
+        "dependencies": {
+          "hft.core": "1.0.0"
+        },
+        "runtime": {
+          "hft.infra.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "hft.risk/1.0.0": {
+        "dependencies": {
+          "hft.core": "1.0.0",
+          "hft.infra": "1.0.0",
+          "hft.strategies": "1.0.0"
+        },
+        "runtime": {
+          "hft.risk.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "hft.strategies/1.0.0": {
+        "dependencies": {
+          "hft.core": "1.0.0",
+          "hft.feeds": "1.0.0"
+        },
+        "runtime": {
+          "hft.strategies.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "hft.backtest/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "hft.core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "hft.execution/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "hft.feeds/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "hft.infra/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "hft.risk/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "hft.strategies/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

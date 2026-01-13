@@ -5,37 +5,32 @@ namespace Hft.Core
     public class PnlEngine
     {
         private readonly PositionSnapshot _snapshot;
+        private readonly IEventLogger? _logger;
         private double _currentMarketPrice;
 
-        public PnlEngine(PositionSnapshot snapshot)
+        public PnlEngine(PositionSnapshot snapshot, IEventLogger? logger = null)
         {
             _snapshot = snapshot;
+            _logger = logger;
         }
 
         public void OnFill(Fill fill)
         {
             double signedQty = fill.Side == OrderSide.Buy ? fill.Quantity : -fill.Quantity;
-            double cost = signedQty * fill.Price;
-            
-            // Very simplified PnL logic for HFT demo
-            // Real logic involves fifo/lifo matching
-            
+
             double oldPos = _snapshot.NetPosition;
             double newPos = oldPos + signedQty;
-            
-            // Check if position flip or reduction
+
             if (oldPos != 0 && Math.Sign(oldPos) != Math.Sign(signedQty))
             {
-                // Closing trade
-                double closingQty = Math.Abs(signedQty) > Math.Abs(oldPos) ? -oldPos : signedQty;
-                double pnl = (oldPos > 0) ? (fill.Price - _snapshot.AvgEntryPrice) * Math.Abs(closingQty) 
+                double closingQty = Math.Min(Math.Abs(signedQty), Math.Abs(oldPos)) * Math.Sign(signedQty);
+                double pnl = (oldPos > 0) ? (fill.Price - _snapshot.AvgEntryPrice) * Math.Abs(closingQty)
                                           : (_snapshot.AvgEntryPrice - fill.Price) * Math.Abs(closingQty);
-                _snapshot.RealizedPnL += pnl;
+                _snapshot.RealizedPnL = _snapshot.RealizedPnL + pnl;
             }
-            
+
             if (newPos != 0)
             {
-                // Updating Avg Entry Price is complex on flips, omitting for simple weighted avg here
                 if (oldPos == 0 || Math.Sign(oldPos) == Math.Sign(signedQty))
                 {
                      double totalCost = (_snapshot.AvgEntryPrice * Math.Abs(oldPos)) + (fill.Price * Math.Abs(signedQty));
@@ -48,23 +43,29 @@ namespace Hft.Core
             }
 
             _snapshot.NetPosition = newPos;
+            _logger?.LogPnlUpdate(_snapshot.InstrumentId, newPos, _snapshot.RealizedPnL, _snapshot.UnrealizedPnL);
             MarkToMarket(_currentMarketPrice);
         }
 
         public void MarkToMarket(double currentPrice)
         {
             _currentMarketPrice = currentPrice;
-            if (_snapshot.NetPosition == 0)
+            double netPos = _snapshot.NetPosition;
+            double avgPx = _snapshot.AvgEntryPrice;
+
+            if (netPos == 0)
             {
                 _snapshot.UnrealizedPnL = 0;
             }
             else
             {
-                if (_snapshot.NetPosition > 0)
-                    _snapshot.UnrealizedPnL = (currentPrice - _snapshot.AvgEntryPrice) * _snapshot.NetPosition;
+                if (netPos > 0)
+                    _snapshot.UnrealizedPnL = (currentPrice - avgPx) * netPos;
                 else
-                    _snapshot.UnrealizedPnL = (_snapshot.AvgEntryPrice - currentPrice) * Math.Abs(_snapshot.NetPosition);
+                    _snapshot.UnrealizedPnL = (avgPx - currentPrice) * Math.Abs(netPos);
             }
+            _logger?.LogPnlUpdate(_snapshot.InstrumentId, netPos, _snapshot.RealizedPnL, _snapshot.UnrealizedPnL);
         }
     }
 }
+

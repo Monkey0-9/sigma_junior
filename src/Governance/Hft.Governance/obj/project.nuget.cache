@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "4Diam2zFz9M=",
+  "success": true,
+  "projectFilePath": "c:\\hft_platform\\src\\Governance\\Hft.Governance\\Hft.Governance.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Praveen P\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.22\\microsoft.netcore.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Praveen P\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.22\\microsoft.windowsdesktop.app.ref.8.0.22.nupkg.sha512",
+    "C:\\Users\\Praveen P\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.22\\microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
+  ],
+  "logs": []
+}

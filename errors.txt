@@ -1,0 +1,20 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  hft.core -> C:\hft_platform\core\hft.core\bin\Debug\net8.0\hft.core.dll
+C:\hft_platform\ml\hft.ml\Registry\ModelRegistryManager.cs(64,27): error CA1869: Avoid creating a new 'JsonSerializerOptions' instance for every serialization operation. Cache and reuse instances instead. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1869) [C:\hft_platform\ml\hft.ml\hft.ml.csproj]
+C:\hft_platform\ml\hft.ml\Registry\ModelRegistryManager.cs(68,23): error CA1852: Type 'RegistryRoot' can be sealed because it has no subtypes in its containing assembly and is not externally visible (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1852) [C:\hft_platform\ml\hft.ml\hft.ml.csproj]
+C:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(45,17): error CA1031: Modify 'FlushLoop' to catch a more specific allowed exception type, or rethrow the exception (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1031) [C:\hft_platform\infra\hft.infra\hft.infra.csproj]
+C:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(72,34): error CA2234: Modify 'ClickHouseExporter.FlushMetricsAsync()' to call 'HttpClient.PostAsync(Uri, HttpContent)' instead of 'HttpClient.PostAsync(string, HttpContent)' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2234) [C:\hft_platform\infra\hft.infra\hft.infra.csproj]
+C:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(71,27): error CA2000: Call System.IDisposable.Dispose on object created by 'new StringContent(sb.ToString(), Encoding.UTF8, "text/plain")' before all references to it are out of scope (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000) [C:\hft_platform\infra\hft.infra\hft.infra.csproj]
+
+Build FAILED.
+
+C:\hft_platform\ml\hft.ml\Registry\ModelRegistryManager.cs(64,27): error CA1869: Avoid creating a new 'JsonSerializerOptions' instance for every serialization operation. Cache and reuse instances instead. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1869) [C:\hft_platform\ml\hft.ml\hft.ml.csproj]
+C:\hft_platform\ml\hft.ml\Registry\ModelRegistryManager.cs(68,23): error CA1852: Type 'RegistryRoot' can be sealed because it has no subtypes in its containing assembly and is not externally visible (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1852) [C:\hft_platform\ml\hft.ml\hft.ml.csproj]
+C:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(45,17): error CA1031: Modify 'FlushLoop' to catch a more specific allowed exception type, or rethrow the exception (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1031) [C:\hft_platform\infra\hft.infra\hft.infra.csproj]
+C:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(72,34): error CA2234: Modify 'ClickHouseExporter.FlushMetricsAsync()' to call 'HttpClient.PostAsync(Uri, HttpContent)' instead of 'HttpClient.PostAsync(string, HttpContent)' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2234) [C:\hft_platform\infra\hft.infra\hft.infra.csproj]
+C:\hft_platform\infra\hft.infra\ClickHouseExporter.cs(71,27): error CA2000: Call System.IDisposable.Dispose on object created by 'new StringContent(sb.ToString(), Encoding.UTF8, "text/plain")' before all references to it are out of scope (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2000) [C:\hft_platform\infra\hft.infra\hft.infra.csproj]
+    0 Warning(s)
+    5 Error(s)
+
+Time Elapsed 00:00:01.28

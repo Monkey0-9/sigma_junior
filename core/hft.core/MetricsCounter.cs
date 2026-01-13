@@ -2,7 +2,10 @@ using System.Threading;
 
 namespace Hft.Core
 {
-    public class MetricsCounter
+    /// <summary>
+    /// GRANDMASTER: Sealed class for performance and security (CA1052).
+    /// </summary>
+    public sealed class MetricsCounter
     {
         private long _value;
         public string Name { get; }

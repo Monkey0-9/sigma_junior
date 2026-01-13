@@ -289,12 +289,12 @@
           }
         }
       },
-      "hft.feeds/1.0.0": {
+      "hft.infra/1.0.0": {
         "dependencies": {
           "hft.core": "1.0.0"
         },
         "runtime": {
-          "hft.feeds.dll": {
+          "hft.infra.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -303,22 +303,10 @@
       "hft.risk/1.0.0": {
         "dependencies": {
           "hft.core": "1.0.0",
-          "hft.strategies": "1.0.0"
+          "hft.infra": "1.0.0"
         },
         "runtime": {
           "hft.risk.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "hft.strategies/1.0.0": {
-        "dependencies": {
-          "hft.core": "1.0.0",
-          "hft.feeds": "1.0.0"
-        },
-        "runtime": {
-          "hft.strategies.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -498,17 +486,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "hft.feeds/1.0.0": {
+    "hft.infra/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
     "hft.risk/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "hft.strategies/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -3,21 +3,16 @@ using System.IO;
 using System.Text;
 using System.Runtime.CompilerServices;
 
+using Hft.Core;
+
 namespace Hft.Core.Audit
 {
-    public enum AuditRecordType : byte
-    {
-        OrderSubmit = 1,
-        OrderReject = 2,
-        Fill = 3,
-        SystemEvent = 255
-    }
-
     public class BinaryAuditLog : IDisposable
     {
         private readonly FileStream _fs;
         private readonly BinaryWriter _writer;
         private readonly object _lock = new object();
+        private bool _disposed;
 
         public BinaryAuditLog(string directory, string dateStr)
         {
@@ -44,14 +39,28 @@ namespace Hft.Core.Audit
             }
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    lock (_lock)
+                    {
+                        _writer?.Flush();
+                        _writer?.Close();
+                        _fs?.Close();
+                    }
+                }
+                _disposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            lock (_lock)
-            {
-                _writer?.Flush();
-                _writer?.Close();
-                _fs?.Close();
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
+

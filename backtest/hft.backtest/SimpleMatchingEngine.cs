@@ -2,18 +2,17 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Hft.Core;
-using Hft.Core.RingBuffer; // NEW namespace
 
 namespace Hft.Backtest
 {
-    public class SimpleMatchingEngine
+    public sealed class SimpleMatchingEngine : IDisposable
     {
         private readonly LockFreeRingBuffer<Order> _inputRing;
         private readonly PnlEngine _pnlEngine;
         private readonly MetricsCounter _fillsGenerated;
         private readonly CancellationTokenSource _cts;
-        private Task _task;
-        private long _fillIdCounter = 0;
+        private Task? _task;
+        private long _fillIdCounter;
 
         public SimpleMatchingEngine(LockFreeRingBuffer<Order> inputRing, PnlEngine pnlEngine, MetricsCounter fillsGenerated)
         {
@@ -31,7 +30,8 @@ namespace Hft.Backtest
         public void Stop()
         {
             _cts.Cancel();
-            try { _task?.Wait(); } catch { }
+            try { _task?.Wait(); } catch (AggregateException) { }
+            catch (TaskCanceledException) { }
         }
 
         public void ProcessSingleOrder(Order order)
@@ -69,5 +69,12 @@ namespace Hft.Backtest
             _pnlEngine.OnFill(fill);
             _fillsGenerated.Increment();
         }
+
+        public void Dispose()
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+        }
     }
 }
+

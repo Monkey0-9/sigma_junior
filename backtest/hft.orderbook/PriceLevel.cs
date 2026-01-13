@@ -50,8 +50,7 @@ namespace Hft.OrderBook
         /// <summary>Number of hidden orders at this price</summary>
         public int HiddenOrderCount { get; private set; }
 
-        /// <summary>Total number of orders at this price</summary>
-        public int TotalOrderCount => VisibleOrderCount + HiddenOrderCount;
+        public int TotalOrderCount { [MethodImpl(MethodImplOptions.AggressiveInlining)] get => VisibleOrderCount + HiddenOrderCount; }
 
         // Doubly-linked list nodes for order queue (cache line aligned)
         private readonly long _listPadding1;
@@ -107,6 +106,7 @@ namespace Hft.OrderBook
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddOrder(OrderQueueEntry order, OrderQueueNode node)
         {
+            ArgumentNullException.ThrowIfNull(node);
             // Validate node
             node.PriceLevel = this;
             node.Next = null;
@@ -146,6 +146,7 @@ namespace Hft.OrderBook
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveOrder(OrderQueueNode node, int quantity)
         {
+            ArgumentNullException.ThrowIfNull(node);
             if (node.Prev != null)
             {
                 node.Prev.Next = node.Next;
@@ -206,20 +207,17 @@ namespace Hft.OrderBook
         /// <summary>
         /// Returns true if the queue is empty.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsEmpty => First == null;
+        public bool IsEmpty { [MethodImpl(MethodImplOptions.AggressiveInlining)] get => First == null; }
 
         /// <summary>
         /// Returns true if there are no visible orders.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool HasNoVisibleOrders => VisibleOrderCount == 0;
+        public bool HasNoVisibleOrders { [MethodImpl(MethodImplOptions.AggressiveInlining)] get => VisibleOrderCount == 0; }
 
         /// <summary>
         /// Gets the current version for optimistic concurrency.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public long GetVersion() => Volatile.Read(ref _version);
+        public long Version { [MethodImpl(MethodImplOptions.AggressiveInlining)] get => Volatile.Read(ref _version); }
 
         /// <summary>
         /// Returns a snapshot of the L2 entry for this price level.
@@ -322,55 +320,63 @@ namespace Hft.OrderBook
         /// <summary>
         /// Returns true if this is a hidden order.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsHidden => Order.IsHidden;
+        public bool IsHidden { [MethodImpl(MethodImplOptions.AggressiveInlining)] get => Order.IsHidden; }
 
         /// <summary>
         /// Returns the current queue position (1-based from front).
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetQueuePosition()
+        public int QueuePosition
         {
-            int pos = 1;
-            var node = Prev;
-            while (node != null)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
             {
-                pos++;
-                node = node.Prev;
+                int pos = 1;
+                var node = Prev;
+                while (node != null)
+                {
+                    pos++;
+                    node = node.Prev;
+                }
+                return pos;
             }
-            return pos;
         }
 
         /// <summary>
         /// Returns the number of orders ahead in the queue.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetOrdersAhead()
+        public int OrdersAhead
         {
-            int count = 0;
-            var node = Prev;
-            while (node != null)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
             {
-                count++;
-                node = node.Prev;
+                int count = 0;
+                var node = Prev;
+                while (node != null)
+                {
+                    count++;
+                    node = node.Prev;
+                }
+                return count;
             }
-            return count;
         }
 
         /// <summary>
         /// Returns the total quantity ahead in the queue (including hidden).
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetQuantityAhead()
+        public int QuantityAhead
         {
-            int qty = 0;
-            var node = Prev;
-            while (node != null)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
             {
-                qty += node.Order.LeavesQuantity;
-                node = node.Prev;
+                int qty = 0;
+                var node = Prev;
+                while (node != null)
+                {
+                    qty += node.Order.LeavesQuantity;
+                    node = node.Prev;
+                }
+                return qty;
             }
-            return qty;
         }
     }
 
@@ -419,7 +425,7 @@ namespace Hft.OrderBook
             }
             else
             {
-                node.Order = order;
+                node.UpdateOrder(order);
                 node.Prev = null;
                 node.Next = null;
                 node.PriceLevel = null;
@@ -435,6 +441,7 @@ namespace Hft.OrderBook
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Return(OrderQueueNode node)
         {
+            ArgumentNullException.ThrowIfNull(node);
             if (_count >= _maxSize) return; // Pool full
 
             node.PoolNext = null;

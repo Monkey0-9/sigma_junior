@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Hft.Core.RingBuffer;
+using Hft.Core;
 
 namespace Hft.Core.Tests
 {

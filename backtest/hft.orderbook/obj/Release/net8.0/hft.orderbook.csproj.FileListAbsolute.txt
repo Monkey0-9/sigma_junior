@@ -1,0 +1,6 @@
+C:\hft_platform\backtest\hft.orderbook\obj\Release\net8.0\hft.orderbook.csproj.AssemblyReference.cache
+C:\hft_platform\backtest\hft.orderbook\obj\Release\net8.0\hft.orderbook.GeneratedMSBuildEditorConfig.editorconfig
+C:\hft_platform\backtest\hft.orderbook\obj\Release\net8.0\hft.orderbook.AssemblyInfoInputs.cache
+C:\hft_platform\backtest\hft.orderbook\obj\Release\net8.0\hft.orderbook.AssemblyInfo.cs
+C:\hft_platform\backtest\hft.orderbook\obj\Release\net8.0\hft.orderbook.csproj.CoreCompileInputs.cache
+C:\hft_platform\backtest\hft.orderbook\obj\Release\net8.0\hft.orderbook.sourcelink.json

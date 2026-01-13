@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter</value>
+  </resheader>
+
+  <data name="EngineInit" xml:space="preserve">
+    <value>[{0:O}] [INIT] Initializing TradingEngine (ALADDIN Architecture)</value>
+  </data>
+
+  <data name="EngineStandby" xml:space="preserve">
+    <value>[{0:O}] [ENGINE] Transitioned to STANDBY</value>
+  </data>
+
+  <data name="EngineStopped" xml:space="preserve">
+    <value>[{0:O}] [SHUTDOWN] Engine STOPPED</value>
+  </data>
+
+  <data name="FiosApproval" xml:space="preserve">
+    <value>[FIOS] Sovereign Approval: Order Qty {0:F2}</value>
+  </data>
+
+  <data name="FiosRejection" xml:space="preserve">
+    <value>[FIOS] Sovereign REJECTION: {0} - {1}</value>
+  </data>
+
+  <data name="MonitorHeader" xml:space="preserve">
+    <value>=== HFT MONITOR [{0:O}] ===</value>
+  </data>
+
+  <data name="MonitorState" xml:space="preserve">
+    <value>State: {0} | PID: {1}</value>
+  </data>
+
+  <data name="MonitorMetric" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+
+  <data name="MonitorPnl" xml:space="preserve">
+    <value>PnL: {0:F2} | Latency(p99): {1:F2}us</value>
+  </data>
+
+  <data name="PlatformStart" xml:space="preserve">
+    <value>Starting HFT Platform (Aladdin Architecture)</value>
+  </data>
+
+  <data name="ShutdownCancelled" xml:space="preserve">
+    <value>
+[SHUTDOWN] Cancellation received.</value>
+  </data>
+
+  <data name="ShutdownComplete" xml:space="preserve">
+    <value>Shutdown complete. Exit.</value>
+  </data>
+
+  <data name="ShadowCopyProgress" xml:space="preserve">
+    <value>[OPS] Performing shadow copy to {0}...</value>
+  </data>
+
+  <data name="ShadowCopyComplete" xml:space="preserve">
+    <value>[OPS] Shadow copy complete. Executing isolated process...</value>
+  </data>
+
+  <data name="FatalError" xml:space="preserve">
+    <value>[FATAL] Engine crashed: {0}</value>
+  </data>
+</root>

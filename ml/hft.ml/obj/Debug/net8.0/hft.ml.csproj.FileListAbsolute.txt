@@ -8,6 +8,7 @@ C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.GeneratedMSBuildEditorConfig.e
 C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.AssemblyInfoInputs.cache
 C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.AssemblyInfo.cs
 C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.csproj.CoreCompileInputs.cache
+C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.sourcelink.json
 C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.csproj.Up2Date
 C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\hft.ml.dll
 C:\hft_platform\ml\hft.ml\obj\Debug\net8.0\refint\hft.ml.dll

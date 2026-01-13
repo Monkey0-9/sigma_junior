@@ -13,8 +13,14 @@ namespace Hft.Core
     /// 
     /// Performance: ~5-10ns per position read
     /// </summary>
-    public class PositionSnapshot
+    public sealed class PositionSnapshot : IPositionSnapshotReader
     {
+        /// <summary>
+        /// Total P&L (realized + unrealized).
+        /// </summary>
+        public double TotalPnL => RealizedPnL + UnrealizedPnL;
+
+#pragma warning disable CS0169, CS0414
         // Hot path fields - isolated on their own cache line
         // These are accessed frequently and need protection from false sharing
         private readonly long _netPositionPadding1;
@@ -33,18 +39,78 @@ namespace Hft.Core
         private readonly long _netPositionPadding14;
         private readonly long _netPositionPadding15;
         private readonly long _netPositionPadding16;
-        
-        public double NetPosition;
-        
+#pragma warning restore CS0169, CS0414
+
+        // GRANDMASTER: Private backing fields with Volatile access for thread safety
+        // Properties expose these via getters/setters for CA1051 compliance
+        private double _netPosition;
+        private double _avgEntryPrice;
+        private double _realizedPnL;
+        private double _unrealizedPnL;
+
+#pragma warning disable CS0169, CS0414
         private readonly double _avgEntryPricePadding;
         private readonly double _realizedPnLPadding;
         private readonly double _unrealizedPnLPadding;
         private readonly long _instrumentIdPadding;
-        
-        public double AvgEntryPrice;
-        public double RealizedPnL;
-        public double UnrealizedPnL;
-        
+#pragma warning restore CS0169, CS0414
+
+        /// <summary>
+        /// Net position (positive = long, negative = short).
+        /// GRANDMASTER: Exposed via property with Volatile read/write for CA1051 compliance.
+        /// </summary>
+        public double NetPosition
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Volatile.Read(ref _netPosition);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Volatile.Write(ref _netPosition, value);
+        }
+
+        /// <summary>
+        /// Average entry price.
+        /// GRANDMASTER: Exposed via property with Volatile read/write for CA1051 compliance.
+        /// </summary>
+        public double AvgEntryPrice
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Volatile.Read(ref _avgEntryPrice);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Volatile.Write(ref _avgEntryPrice, value);
+        }
+
+        /// <summary>
+        /// Realized profit and loss.
+        /// GRANDMASTER: Exposed via property with Volatile read/write for CA1051 compliance.
+        /// </summary>
+        public double RealizedPnL
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Volatile.Read(ref _realizedPnL);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Volatile.Write(ref _realizedPnL, value);
+        }
+
+        /// <summary>
+        /// Unrealized profit and loss (mark-to-market).
+        /// GRANDMASTER: Exposed via property with Volatile read/write for CA1051 compliance.
+        /// </summary>
+        public double UnrealizedPnL
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Volatile.Read(ref _unrealizedPnL);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => Volatile.Write(ref _unrealizedPnL, value);
+        }
+
+        // Explicit interface implementation for IPositionSnapshotReader
+        // These provide the "GetX()" semantics via interface methods
+        double IPositionSnapshotReader.NetPosition => Volatile.Read(ref _netPosition);
+        double IPositionSnapshotReader.AvgEntryPrice => Volatile.Read(ref _avgEntryPrice);
+        double IPositionSnapshotReader.RealizedPnL => Volatile.Read(ref _realizedPnL);
+        double IPositionSnapshotReader.UnrealizedPnL => Volatile.Read(ref _unrealizedPnL);
+
+#pragma warning disable CS0169, CS0414
         private readonly long _instrumentIdPadding2;
         private readonly long _instrumentIdPadding3;
         private readonly long _instrumentIdPadding4;
@@ -60,8 +126,22 @@ namespace Hft.Core
         private readonly long _instrumentIdPadding14;
         private readonly long _instrumentIdPadding15;
         private readonly long _instrumentIdPadding16;
-        
+#pragma warning restore CS0169, CS0414
+
+        /// <summary>
+        /// Instrument identifier.
+        /// </summary>
         public long InstrumentId { get; set; }
+
+        /// <summary>
+        /// Asset class classification.
+        /// </summary>
+        public AssetClass AssetClass { get; set; }
+
+        /// <summary>
+        /// Factor exposures for the position.
+        /// </summary>
+        public FactorExposure Factors { get; set; }
 
         /// <summary>
         /// Creates a new position snapshot.
@@ -69,132 +149,57 @@ namespace Hft.Core
         public PositionSnapshot()
         {
             // Initialize padding to prevent false sharing
-            _netPositionPadding1 = _netPositionPadding2 = _netPositionPadding3 = _netPositionPadding4 = 
-                _netPositionPadding5 = _netPositionPadding6 = _netPositionPadding7 = _netPositionPadding8 = 
-                _netPositionPadding9 = _netPositionPadding10 = _netPositionPadding11 = _netPositionPadding12 = 
+            _netPositionPadding1 = _netPositionPadding2 = _netPositionPadding3 = _netPositionPadding4 =
+                _netPositionPadding5 = _netPositionPadding6 = _netPositionPadding7 = _netPositionPadding8 =
+                _netPositionPadding9 = _netPositionPadding10 = _netPositionPadding11 = _netPositionPadding12 =
                 _netPositionPadding13 = _netPositionPadding14 = _netPositionPadding15 = _netPositionPadding16 = 0;
-            
+
             _avgEntryPricePadding = 0;
             _realizedPnLPadding = 0;
             _unrealizedPnLPadding = 0;
             _instrumentIdPadding = 0;
-            
-            _instrumentIdPadding2 = _instrumentIdPadding3 = _instrumentIdPadding4 = _instrumentIdPadding5 = 
-                _instrumentIdPadding6 = _instrumentIdPadding7 = _instrumentIdPadding8 = _instrumentIdPadding9 = 
-                _instrumentIdPadding10 = _instrumentIdPadding11 = _instrumentIdPadding12 = _instrumentIdPadding13 = 
+
+            _instrumentIdPadding2 = _instrumentIdPadding3 = _instrumentIdPadding4 = _instrumentIdPadding5 =
+                _instrumentIdPadding6 = _instrumentIdPadding7 = _instrumentIdPadding8 = _instrumentIdPadding9 =
+                _instrumentIdPadding10 = _instrumentIdPadding11 = _instrumentIdPadding12 = _instrumentIdPadding13 =
                 _instrumentIdPadding14 = _instrumentIdPadding15 = _instrumentIdPadding16 = 0;
         }
 
         /// <summary>
-        /// Gets the net position with volatile read for memory barrier.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetNetPosition()
-        {
-            return Volatile.Read(ref NetPosition);
-        }
-
-        /// <summary>
-        /// Gets the average entry price with volatile read.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetAvgEntryPrice()
-        {
-            return Volatile.Read(ref AvgEntryPrice);
-        }
-
-        /// <summary>
-        /// Gets the realized PnL with volatile read.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetRealizedPnL()
-        {
-            return Volatile.Read(ref RealizedPnL);
-        }
-
-        /// <summary>
-        /// Gets the unrealized PnL with volatile read.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetUnrealizedPnL()
-        {
-            return Volatile.Read(ref UnrealizedPnL);
-        }
-
-        /// <summary>
-        /// Sets the net position with volatile write.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetNetPosition(double value)
-        {
-            Volatile.Write(ref NetPosition, value);
-        }
-
-        /// <summary>
-        /// Sets the average entry price with volatile write.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetAvgEntryPrice(double value)
-        {
-            Volatile.Write(ref AvgEntryPrice, value);
-        }
-
-        /// <summary>
-        /// Sets the realized PnL with volatile write.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetRealizedPnL(double value)
-        {
-            Volatile.Write(ref RealizedPnL, value);
-        }
-
-        /// <summary>
-        /// Sets the unrealized PnL with volatile write.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetUnrealizedPnL(double value)
-        {
-            Volatile.Write(ref UnrealizedPnL, value);
-        }
-
-        /// <summary>
         /// Creates a snapshot copy of the current position.
+        /// GRANDMASTER: Thread-safe copy using Volatile reads.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PositionSnapshot Copy()
         {
             return new PositionSnapshot
             {
-                NetPosition = GetNetPosition(),
-                AvgEntryPrice = GetAvgEntryPrice(),
-                RealizedPnL = GetRealizedPnL(),
-                UnrealizedPnL = GetUnrealizedPnL(),
-                InstrumentId = InstrumentId
+                NetPosition = Volatile.Read(ref _netPosition),
+                AvgEntryPrice = Volatile.Read(ref _avgEntryPrice),
+                RealizedPnL = Volatile.Read(ref _realizedPnL),
+                UnrealizedPnL = Volatile.Read(ref _unrealizedPnL),
+                InstrumentId = InstrumentId,
+                AssetClass = AssetClass,
+                Factors = Factors
             };
         }
 
         /// <summary>
         /// Copies data from another position snapshot.
+        /// GRANDMASTER: Thread-safe copy using Volatile reads.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CopyFrom(PositionSnapshot other)
         {
             if (other == null) return;
-            
-            SetNetPosition(other.GetNetPosition());
-            SetAvgEntryPrice(other.GetAvgEntryPrice());
-            SetRealizedPnL(other.GetRealizedPnL());
-            SetUnrealizedPnL(other.GetUnrealizedPnL());
-            InstrumentId = other.InstrumentId;
-        }
 
-        /// <summary>
-        /// Gets the total PnL (realized + unrealized).
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetTotalPnL()
-        {
-            return GetRealizedPnL() + GetUnrealizedPnL();
+            Volatile.Write(ref _netPosition, other._netPosition);
+            Volatile.Write(ref _avgEntryPrice, other._avgEntryPrice);
+            Volatile.Write(ref _realizedPnL, other._realizedPnL);
+            Volatile.Write(ref _unrealizedPnL, other._unrealizedPnL);
+            InstrumentId = other.InstrumentId;
+            AssetClass = other.AssetClass;
+            Factors = other.Factors;
         }
 
         /// <summary>
@@ -202,8 +207,8 @@ namespace Hft.Core
         /// </summary>
         public override string ToString()
         {
-            return $"Position[Inst:{InstrumentId}] Pos:{GetNetPosition():F0} @ {GetAvgEntryPrice():F2} " +
-                   $"P&L: {GetTotalPnL():F2} (R:{GetRealizedPnL():F2} U:{GetUnrealizedPnL():F2})";
+            return $"Position[Inst:{InstrumentId}] Pos:{Volatile.Read(ref _netPosition):F0} @ {Volatile.Read(ref _avgEntryPrice):F2} " +
+                   $"P&L: {TotalPnL:F2} (R:{Volatile.Read(ref _realizedPnL):F2} U:{Volatile.Read(ref _unrealizedPnL):F2})";
         }
     }
 }

@@ -1,0 +1,26 @@
+name: Performance Benchmarking
+
+on:
+  push:
+    branches: [ main, master ]
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight
+
+jobs:
+  benchmark:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Run Benchmarks
+      run: dotnet run -c Release --project benchmarks/hft.benchmarks -- --filter *
+      # In production, this would upload results to a performance tracking dashboard

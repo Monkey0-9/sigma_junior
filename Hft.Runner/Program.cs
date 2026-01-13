@@ -1,125 +1,107 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Hft.Core;
-using Hft.Core.Audit;
-using Hft.Core.RingBuffer; // NEW namespace
-using Hft.Feeds;
-using Hft.Strategies;
-using Hft.Risk;
-using Hft.Execution;
-using Hft.Infra;
 
 namespace Hft.Runner
 {
-    class Program
+    internal static class Program
     {
-        static async Task Main(string[] args)
+        private const string ShadowCopyOutputArg = "--shadow-copy-output";
+        private const string UdpPortArg = "--udp-port";
+        private const string MetricsPortArg = "--metrics-port";
+        private const string MetricsPortDefault = "9180";
+        private const string UdpPortDefault = "5005";
+
+        private static async Task Main(string[] args)
         {
-            Console.WriteLine("Starting HFT Platform (Institutional Hardened Mode)...");
+            // Parse Arguments
+            string? shadowDir = ParseArg(args, ShadowCopyOutputArg);
+            int udpPort = int.Parse(ParseArg(args, UdpPortArg) ?? UdpPortDefault, CultureInfo.InvariantCulture);
+            int metricsPort = int.Parse(ParseArg(args, MetricsPortArg) ?? MetricsPortDefault, CultureInfo.InvariantCulture);
 
-            System.IO.Directory.CreateDirectory("data/logs");
-            var auditLog = new BinaryAuditLog("data/logs", DateTime.UtcNow.ToString("yyyyMMdd"));
-
-            // 1. Setup Core Primitives
-            // Using Enterprise RingBuffer (power of 2)
-            var tickRing = new LockFreeRingBuffer<MarketDataTick>(1024 * 16);
-            var approvedOrderRing = new LockFreeRingBuffer<Order>(1024);
-            var preRiskOrderRing = new LockFreeRingBuffer<Order>(1024);
-            // ObjectPool removed
-
-            var position = new PositionSnapshot { InstrumentId = 1001 };
-            var pnlEngine = new PnlEngine(position);
-
-            // Metrics
-            var ticksProcessed = new MetricsCounter("hft_ticks_processed");
-            var ordersGenerated = new MetricsCounter("hft_orders_generated");
-            var ordersApproved = new MetricsCounter("hft_orders_approved");
-            var ordersRejected = new MetricsCounter("hft_orders_rejected");
-            var executedOrders = new MetricsCounter("hft_orders_executed");
-
-            var metricsList = new List<MetricsCounter> { ticksProcessed, ordersGenerated, ordersApproved, ordersRejected, executedOrders };
-
-            // 2. Setup Components
-            int udpPort = 5001;
-            var simulator = new UdpMarketDataSimulator(udpPort, 100);
-            var listener = new UdpMarketDataListener(udpPort, tickRing);
-
-            // Strategy
-            var strategy = new MarketMakerStrategy(preRiskOrderRing, ordersGenerated, position, spread: 0.1, qty: 10);
-
-            // Risk
-            var limits = new RiskLimits
+            if (!string.IsNullOrEmpty(shadowDir))
             {
-                MaxOrderQty = 100,
-                MaxPosition = 500,
-                MaxOrdersPerSec = 50,
-                MaxNotionalPerOrder = 20000,
-                KillSwitchActive = false
+                PerformShadowCopy(shadowDir);
+                return; // The child process will handle the run
+            }
+
+            Console.WriteLine(Strings.PlatformStart);
+
+            using var engine = new TradingEngine(udpPort, metricsPort);
+
+            // Setup Graceful Shutdown Hook
+            using var cts = new CancellationTokenSource();
+            Console.CancelKeyPress += (s, e) =>
+            {
+                e.Cancel = true;
+                cts.Cancel();
             };
-            var riskEngine = new PreTradeRiskEngine(preRiskOrderRing, approvedOrderRing, position, ordersApproved, ordersRejected, limits, auditLog);
 
-            // Execution
-            var executionStub = new ExecutionStub(approvedOrderRing, pnlEngine, executedOrders);
-
-            // Infra
-            var metricsServer = new MetricsServer(9100, metricsList, position);
-
-            // 3. Start everything
-            Console.WriteLine("Initializing components...");
-            simulator.Start();
-            listener.Start();
-            riskEngine.Start();
-            executionStub.Start();
-            metricsServer.Start();
-
-            // Strategy Loop
-            var cts = new CancellationTokenSource();
-
-            var strategyTask = Task.Run(() =>
+            try
             {
-                var spin = new SpinWait();
-                while (!cts.IsCancellationRequested)
-                {
-                    if (tickRing.TryRead(out var tick))
-                    {
-                        strategy.OnTick(ref tick);
-                        ticksProcessed.Increment();
-                        pnlEngine.MarkToMarket((tick.BidPrice + tick.AskPrice) / 2.0);
-                    }
-                    else
-                    {
-                        spin.SpinOnce();
-                    }
-                }
-            });
-
-            Console.WriteLine("System Running. Press Ctrl+C to stop.");
-
-            var tuiTask = Task.Run(async () =>
+                await engine.StartAsync(cts.Token).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
             {
-                while (!cts.IsCancellationRequested)
-                {
-                    Console.Clear();
-                    Console.WriteLine($"=== HFT MONITOR [{(DateTime.UtcNow):O}] ===");
-                    Console.WriteLine($"Ticks Processed: {ticksProcessed.Get()}");
-                    Console.WriteLine($"Orders Gen/Appr/Rej/Exec: {ordersGenerated.Get()} / {ordersApproved.Get()} / {ordersRejected.Get()} / {executedOrders.Get()}");
-                    await Task.Delay(1000);
-                }
-            });
+                Console.WriteLine(Strings.ShutdownCancelled);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture, Strings.FatalError, ex.Message));
+                Console.WriteLine(ex.StackTrace);
+            }
+            catch (System.Net.Sockets.SocketException ex)
+            {
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture, Strings.FatalError, ex.Message));
+                Console.WriteLine(ex.StackTrace);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture, Strings.FatalError, ex.Message));
+                Console.WriteLine(ex.StackTrace);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture, Strings.FatalError, ex.Message));
+                Console.WriteLine(ex.StackTrace);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture, Strings.FatalError, ex.Message));
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                engine.Stop();
+                Console.WriteLine(Strings.ShutdownComplete);
+            }
+        }
 
-            var tcs = new TaskCompletionSource<bool>();
-            Console.CancelKeyPress += (s, e) => { e.Cancel = true; tcs.SetResult(true); cts.Cancel(); };
+        private static string? ParseArg(string[] args, string flag)
+        {
+            int idx = Array.IndexOf(args, flag);
+            return (idx >= 0 && idx < args.Length - 1) ? args[idx + 1] : null;
+        }
 
-            await tcs.Task;
+        private static void PerformShadowCopy(string targetDir)
+        {
+            Console.WriteLine(string.Format(CultureInfo.InvariantCulture, Strings.ShadowCopyProgress, targetDir));
+            Directory.CreateDirectory(targetDir);
 
-            simulator.Stop();
-            listener.Stop();
-            riskEngine.Stop();
-            executionStub.Stop();
-            metricsServer.Stop();
-            auditLog.Dispose();
+            // Basic recursive copy (omitting complex error handling for institutional demo)
+            string source = AppDomain.CurrentDomain.BaseDirectory;
+            foreach (string dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(source, targetDir, StringComparison.InvariantCulture));
+            foreach (string newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
+                File.Copy(newPath, newPath.Replace(source, targetDir, StringComparison.InvariantCulture), true);
+
+            Console.WriteLine(Strings.ShadowCopyComplete);
+            // Instructions: User should run the binary from targetDir manually or use a watcher script
         }
     }
 }
+

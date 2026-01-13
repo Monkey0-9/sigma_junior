@@ -209,11 +209,14 @@ namespace Hft.Routing
         /// <summary>Implementation Shortfall: optimize for total cost</summary>
         ImplementationShortfall = 3,
 
+        /// <summary>Almgren-Chriss: Optimal trajectory based on risk aversion</summary>
+        AlmgrenChriss = 4,
+
         /// <summary>Immediate Or Cancel: must fill immediately or cancel</summary>
-        IOC = 4,
+        IOC = 5,
 
         /// <summary>All Or Nothing: must fill completely or nothing</summary>
-        AON = 5
+        AON = 6
     }
 
     /// <summary>
@@ -248,6 +251,18 @@ namespace Hft.Routing
         /// <summary>Iceberg display quantity (if UseIcebergOrders is true)</summary>
         public int IcebergDisplayQuantity { get; init; }
 
+        /// <summary>Risk aversion parameter (lambda) for Almgren-Chriss</summary>
+        public double RiskAversion { get; init; }
+
+        /// <summary>Daily volatility estimate for Almgren-Chriss</summary>
+        public double DailyVolatility { get; init; }
+
+        /// <summary>Temporary market impact parameter (eta)</summary>
+        public double TemporaryImpact { get; init; }
+
+        /// <summary>Permanent market impact parameter (gamma)</summary>
+        public double PermanentImpact { get; init; }
+
         /// <summary>
         /// Creates default strategy parameters.
         /// </summary>
@@ -264,7 +279,11 @@ namespace Hft.Routing
                 AggressionOverride = 0.5,
                 UseHiddenOrders = false,
                 UseIcebergOrders = false,
-                IcebergDisplayQuantity = 0
+                IcebergDisplayQuantity = 0,
+                RiskAversion = 1e-6,
+                DailyVolatility = 0.02,
+                TemporaryImpact = 0.1,
+                PermanentImpact = 0.05
             };
         }
     }

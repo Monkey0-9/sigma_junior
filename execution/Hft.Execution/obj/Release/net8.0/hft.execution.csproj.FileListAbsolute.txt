@@ -12,6 +12,7 @@ C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.execution.Generat
 C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.execution.AssemblyInfoInputs.cache
 C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.execution.AssemblyInfo.cs
 C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.execution.csproj.CoreCompileInputs.cache
+C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.execution.sourcelink.json
 C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.exec.B779431B.Up2Date
 C:\hft_platform\execution\hft.execution\obj\Release\net8.0\hft.execution.dll
 C:\hft_platform\execution\hft.execution\obj\Release\net8.0\refint\hft.execution.dll

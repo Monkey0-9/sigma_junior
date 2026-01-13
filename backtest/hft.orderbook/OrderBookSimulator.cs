@@ -58,7 +58,7 @@ namespace Hft.OrderBook
     /// <summary>
     /// Immutable order book state snapshot.
     /// </summary>
-    public readonly struct OrderBookState
+    public readonly struct OrderBookState : IEquatable<OrderBookState>
     {
         public long InstrumentId { get; init; }
         public long SequenceNumber { get; init; }
@@ -71,10 +71,10 @@ namespace Hft.OrderBook
         public long TotalBidQuantity { get; init; }
         public long TotalAskQuantity { get; init; }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OrderBookState FromOrderBook(OrderBook book)
+        public static OrderBookState FromOrderBook(OrderBookEngine book)
         {
-            var bbo = book.GetBestBidAsk();
+            ArgumentNullException.ThrowIfNull(book);
+            var bbo = book.BestBidAsk;
             return new OrderBookState
             {
                 InstrumentId = book.InstrumentId,
@@ -84,23 +84,35 @@ namespace Hft.OrderBook
                 BestBidSize = bbo.BestBidSize,
                 BestAskPrice = bbo.BestAskPrice,
                 BestAskSize = bbo.BestAskSize,
-                OrderCount = book.OrderCount,
+                OrderCount = book.ActiveOrderCount,
                 TotalBidQuantity = book.TotalBidQuantity,
                 TotalAskQuantity = book.TotalAskQuantity
             };
         }
+
+        public override bool Equals(object? obj) => obj is OrderBookState other && Equals(other);
+        public bool Equals(OrderBookState other) => InstrumentId == other.InstrumentId && SequenceNumber == other.SequenceNumber;
+        public override int GetHashCode() => HashCode.Combine(InstrumentId, SequenceNumber);
+        public static bool operator ==(OrderBookState left, OrderBookState right) => left.Equals(right);
+        public static bool operator !=(OrderBookState left, OrderBookState right) => !left.Equals(right);
     }
 
     /// <summary>
     /// Result of an order submission.
     /// </summary>
-    public readonly struct OrderSubmissionResult
+    public readonly struct OrderSubmissionResult : IEquatable<OrderSubmissionResult>
     {
         public long OrderId { get; init; }
         public bool IsAccepted { get; init; }
         public RejectReason? RejectReason { get; init; }
         public IReadOnlyList<FillRecord> Fills { get; init; }
         public int? QueuePosition { get; init; }
+
+        public override bool Equals(object? obj) => obj is OrderSubmissionResult other && Equals(other);
+        public bool Equals(OrderSubmissionResult other) => OrderId == other.OrderId && IsAccepted == other.IsAccepted;
+        public override int GetHashCode() => HashCode.Combine(OrderId, IsAccepted);
+        public static bool operator ==(OrderSubmissionResult left, OrderSubmissionResult right) => left.Equals(right);
+        public static bool operator !=(OrderSubmissionResult left, OrderSubmissionResult right) => !left.Equals(right);
     }
 
     /// <summary>
@@ -157,11 +169,19 @@ namespace Hft.OrderBook
     /// Thread safety: Single-threaded simulation (call from one thread).
     /// For multi-threaded use, wrap in a synchronizer.
     /// </summary>
-    public sealed class OrderBookSimulator : IOrderBookSimulator
+    public sealed class OrderBookSimulator : IOrderBookSimulator, IDisposable
     {
-        private readonly OrderBook _book;
+        private readonly OrderBookEngine _book;
         private readonly SimulatorConfig _config;
         private readonly LatencyInjector _latencyInjector;
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _latencyInjector.Dispose();
+        }
         private readonly QueuePositionModel _queueModel;
         private readonly SlippageModel _slippageModel;
         private readonly List<FillRecord> _fillBuffer;
@@ -173,7 +193,7 @@ namespace Hft.OrderBook
         public OrderBookSimulator(SimulatorConfig? config = null)
         {
             _config = config ?? new SimulatorConfig();
-            _book = new OrderBook(_config.InstrumentId, _config.RandomSeed);
+            _book = new OrderBookEngine(_config.InstrumentId);
             _latencyInjector = new LatencyInjector(_config.RandomSeed);
             _queueModel = new QueuePositionModel();
             _slippageModel = new SlippageModel
@@ -194,7 +214,7 @@ namespace Hft.OrderBook
         /// <summary>
         /// Gets the underlying order book.
         /// </summary>
-        public OrderBook Book => _book;
+        public OrderBookEngine Book => _book;
 
         /// <summary>
         /// Gets the configuration.
@@ -282,7 +302,7 @@ namespace Hft.OrderBook
             long price,
             int quantity,
             OrderType type = OrderType.Limit,
-            OrderFlags flags = OrderFlags.None)
+            OrderAttributes flags = OrderAttributes.None)
         {
             long orderId = OrderIdGenerator.NextId();
             long timestamp = _config.EnableLatencyInjection 
@@ -371,7 +391,7 @@ namespace Hft.OrderBook
                 leavesQuantity: quantity,
                 type: OrderType.Market,
                 timeInForce: _config.DefaultTif,
-                flags: OrderFlags.None,
+                flags: OrderAttributes.None,
                 status: OrderStatus.Active,
                 queuePosition: 0,
                 arrivalTimestamp: 0,
@@ -445,13 +465,7 @@ namespace Hft.OrderBook
 
         // ==================== Audit & Replay ====================
 
-        /// <summary>
-        /// Gets the audit log for replay.
-        /// </summary>
-        public IAuditLogReader GetAuditLog()
-        {
-            return _auditLog;
-        }
+        public IAuditLogReader AuditLog => _auditLog;
 
         /// <summary>
         /// Resets the simulator state.
@@ -467,7 +481,7 @@ namespace Hft.OrderBook
 
         private static class OrderIdGenerator
         {
-            private static long _counter = 0;
+            private static long _counter;
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static long NextId()
@@ -479,7 +493,7 @@ namespace Hft.OrderBook
         /// <summary>
         /// Listener that forwards events to the audit log.
         /// </summary>
-        private class AuditLogListener : IOrderBookListener
+        private sealed class AuditLogListener : IOrderBookListener
         {
             private readonly AuditLog _auditLog;
 
@@ -523,7 +537,7 @@ namespace Hft.OrderBook
     /// <summary>
     /// Simple in-memory audit log for deterministic replay.
     /// </summary>
-    public sealed class AuditLog
+    public sealed class AuditLog : IAuditLogReader
     {
         private readonly List<AuditEvent> _events = new();
         private long _nextSequence = 1;
@@ -617,13 +631,7 @@ namespace Hft.OrderBook
             _events.Add(evt);
         }
 
-        /// <summary>
-        /// Gets all events as a read-only list.
-        /// </summary>
-        public IReadOnlyList<AuditEvent> GetEvents()
-        {
-            return _events;
-        }
+        public IReadOnlyList<AuditEvent> Events => _events;
 
         /// <summary>
         /// Clears the log.
@@ -641,7 +649,7 @@ namespace Hft.OrderBook
     public interface IAuditLogReader
     {
         int Count { get; }
-        IReadOnlyList<AuditEvent> GetEvents();
+        IReadOnlyList<AuditEvent> Events { get; }
         void Clear();
     }
 }

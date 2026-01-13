@@ -5,6 +5,7 @@ C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.GeneratedMSBuildEditorCo
 C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.AssemblyInfoInputs.cache
 C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.AssemblyInfo.cs
 C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.csproj.CoreCompileInputs.cache
+C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.sourcelink.json
 C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.dll
 C:\hft_platform\core\hft.core\obj\Debug\net8.0\refint\hft.core.dll
 C:\hft_platform\core\hft.core\obj\Debug\net8.0\hft.core.pdb

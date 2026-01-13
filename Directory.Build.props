@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>All</AnalysisMode>
+    <!-- GRANDMASTER: Treat warnings as errors for CI quality gate -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Suppress justified analyzer rules with documentation -->
+    <NoWarn>$(NoWarn);CA1863</NoWarn> <!-- CompositeFormat requires .NET 8+ -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="Hft.Core" />
+  </ItemGroup>
+</Project>

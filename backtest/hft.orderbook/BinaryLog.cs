@@ -20,7 +20,7 @@ namespace Hft.OrderBook
     public sealed class BinaryLogWriter : IDisposable
     {
         private readonly FileStream _file;
-        private readonly BinaryLogFormat.LogHeader _header;
+        private readonly LogHeader _header;
         private readonly ArrayPool<byte> _bufferPool;
         private readonly byte[] _writeBuffer;
         private readonly int _bufferSize;
@@ -54,7 +54,7 @@ namespace Hft.OrderBook
             _bufferPool = ArrayPool<byte>.Shared;
 
             // Initialize header
-            _header = new BinaryLogFormat.LogHeader
+            _header = new LogHeader
             {
                 Magic = BinaryLogFormat.MagicNumber,
                 Version = (ushort)BinaryLogFormat.CurrentVersion,
@@ -63,8 +63,7 @@ namespace Hft.OrderBook
                 StartTimestamp = 0,
                 EndTimestamp = 0,
                 EventCount = 0,
-                FileSize = 0,
-                Reserved = { }
+                FileSize = 0
             };
 
             // Write header
@@ -82,7 +81,7 @@ namespace Hft.OrderBook
             _writeBuffer = ArrayPool<byte>.Shared.Rent(_bufferSize);
             _bufferPos = 0;
             _eventCount = 0;
-            _header = new BinaryLogFormat.LogHeader
+            _header = new LogHeader
             {
                 Magic = BinaryLogFormat.MagicNumber,
                 Version = (ushort)BinaryLogFormat.CurrentVersion,
@@ -305,7 +304,7 @@ namespace Hft.OrderBook
     public sealed class BinaryLogReader : IDisposable
     {
         private readonly FileStream _file;
-        private readonly BinaryLogFormat.LogHeader _header;
+        private LogHeader _header;
         private readonly ArrayPool<byte> _bufferPool;
         private readonly byte[] _readBuffer;
         private readonly int _bufferSize;
@@ -352,7 +351,7 @@ namespace Hft.OrderBook
         /// <summary>
         /// Gets the log header.
         /// </summary>
-        public BinaryLogFormat.LogHeader Header => _header;
+        public LogHeader Header => _header;
 
         /// <summary>
         /// Gets the instrument ID from the log.
@@ -391,6 +390,7 @@ namespace Hft.OrderBook
         /// <returns>Number of events processed</returns>
         public long ReadAll(Action<AuditEvent> onEvent)
         {
+            ArgumentNullException.ThrowIfNull(onEvent);
             long count = 0;
             long stopPosition = _fileSize - BinaryLogFormat.FooterSize;
 
@@ -418,7 +418,7 @@ namespace Hft.OrderBook
                 }
 
                 // Deserialize event
-                var evt = BinaryLogFormat.DeserializeEvent(_readBuffer.AsSpan(0, eventSize), out _);
+                BinaryLogFormat.DeserializeEvent(_readBuffer.AsSpan(0, eventSize), out var evt);
                 onEvent(evt);
                 count++;
             }
@@ -459,7 +459,7 @@ namespace Hft.OrderBook
                     ReadFromFile(_readBuffer, payloadSize, payloadSize);
                 }
 
-                var evt = BinaryLogFormat.DeserializeEvent(_readBuffer.AsSpan(0, eventSize), out _);
+                BinaryLogFormat.DeserializeEvent(_readBuffer.AsSpan(0, eventSize), out var evt);
 
                 // Dispatch to appropriate callback
                 onAny?.Invoke(evt);
@@ -487,9 +487,9 @@ namespace Hft.OrderBook
         /// Gets event descriptors for random access.
         /// Builds an index of event positions.
         /// </summary>
-        public BinaryLogFormat.EventDescriptor[] BuildIndex()
+        public EventDescriptor[] BuildIndex()
         {
-            var descriptors = new BinaryLogFormat.EventDescriptor[_header.EventCount > int.MaxValue 
+            var descriptors = new EventDescriptor[_header.EventCount > int.MaxValue 
                 ? int.MaxValue 
                 : (int)_header.EventCount];
             int index = 0;
@@ -513,7 +513,7 @@ namespace Hft.OrderBook
                 int eventSize = BinaryLogFormat.GetEventSize(eventType);
                 _filePosition += eventSize;
 
-                descriptors[index] = new BinaryLogFormat.EventDescriptor(
+                descriptors[index] = new EventDescriptor(
                     eventPos, eventSize, eventType, timestamp);
                 index++;
             }
@@ -553,7 +553,7 @@ namespace Hft.OrderBook
                 return false;
             }
 
-            evt = BinaryLogFormat.DeserializeEvent(_readBuffer.AsSpan(0, bytesRead), out int consumed);
+            BinaryLogFormat.DeserializeEvent(_readBuffer.AsSpan(0, bytesRead), out evt);
             return true;
         }
 
@@ -593,30 +593,48 @@ namespace Hft.OrderBook
             }
 
             // Parse header
+            // Parse header manually to avoid readonly field member modification issues
             int pos = 0;
-            _header.Magic = BitConverter.ToUInt32(headerBytes, pos);
+            uint magic = System.Buffers.Binary.BinaryPrimitives.ReadUInt32LittleEndian(headerBytes.Slice(pos));
             pos += 4;
-
-            if (_header.Magic != BinaryLogFormat.MagicNumber)
+            if (magic != BinaryLogFormat.MagicNumber)
                 throw new InvalidDataException("Invalid log file: bad magic number");
 
-            _header.Version = BitConverter.ToUInt16(headerBytes, pos);
+            ushort version = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(headerBytes.Slice(pos));
+            pos += 2;
+            if (version != BinaryLogFormat.CurrentVersion)
+                throw new InvalidDataException($"Unsupported log version: {version}");
+
+            ushort flags = System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(headerBytes.Slice(pos));
             pos += 2;
 
-            if (_header.Version != BinaryLogFormat.CurrentVersion)
-                throw new InvalidDataException($"Unsupported log version: {_header.Version}");
-
-            _header.InstrumentId = BitConverter.ToInt64(headerBytes, pos);
+            long instrumentId = System.Buffers.Binary.BinaryPrimitives.ReadInt64LittleEndian(headerBytes.Slice(pos));
             pos += 8;
 
-            _header.StartTimestamp = BitConverter.ToInt64(headerBytes, pos);
+            long startTimestamp = System.Buffers.Binary.BinaryPrimitives.ReadInt64LittleEndian(headerBytes.Slice(pos));
             pos += 8;
 
-            _header.EndTimestamp = BitConverter.ToInt64(headerBytes, pos);
+            long endTimestamp = System.Buffers.Binary.BinaryPrimitives.ReadInt64LittleEndian(headerBytes.Slice(pos));
             pos += 8;
 
-            _header.EventCount = BitConverter.ToInt64(headerBytes, pos);
+            long eventCount = System.Buffers.Binary.BinaryPrimitives.ReadInt64LittleEndian(headerBytes.Slice(pos));
             pos += 8;
+
+            long fileSize = System.Buffers.Binary.BinaryPrimitives.ReadInt64LittleEndian(headerBytes.Slice(pos));
+            pos += 8;
+
+            // Assign to whole field
+            _header = new LogHeader
+            {
+                Magic = magic,
+                Version = version,
+                Flags = flags,
+                InstrumentId = instrumentId,
+                StartTimestamp = startTimestamp,
+                EndTimestamp = endTimestamp,
+                EventCount = eventCount,
+                FileSize = fileSize
+            };
 
             _filePosition = BinaryLogFormat.HeaderSize;
         }
@@ -736,7 +754,7 @@ namespace Hft.OrderBook
                         (int)evt.Data2,
                         (OrderType)(evt.Data3 & 0xFF),
                         TimeInForce.Day,
-                        (OrderFlags)((evt.Data3 >> 24) & 0xFF),
+                        (OrderAttributes)((evt.Data3 >> 24) & 0xFF),
                         evt.Timestamp
                     );
                     _simulator.SubmitOrder(order);

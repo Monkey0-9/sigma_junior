@@ -1,0 +1,14 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  hft.core -> C:\hft_platform\core\hft.core\bin\Debug\net8.0\hft.core.dll
+  hft.feeds -> C:\hft_platform\feeds\hft.feeds\bin\Debug\net8.0\hft.feeds.dll
+  hft.ml -> C:\hft_platform\ml\hft.ml\bin\Release\net8.0\hft.ml.dll
+  hft.strategies -> C:\hft_platform\strategies\hft.strategies\bin\Debug\net8.0\hft.strategies.dll
+  hft.risk -> C:\hft_platform\risk\hft.risk\bin\Debug\net8.0\hft.risk.dll
+  Hft.Benchmarks -> C:\hft_platform\tests\Hft.Benchmarks\bin\Release\net8.0\Hft.Benchmarks.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.09

@@ -8,45 +8,25 @@ namespace Hft.OrderBook
     /// <summary>
     /// Order type enumeration for L2/L3 support.
     /// </summary>
-    public enum OrderType : byte
+    public enum OrderType
     {
-        /// <summary>Limit order - executes at specified price or better</summary>
         Limit = 0,
-        
-        /// <summary>Market order - executes at best available price</summary>
         Market = 1,
-        
-        /// <summary>Hidden order - not displayed in order book</summary>
         Hidden = 2,
-        
-        /// <summary>Iceberg order - displayed portion revealed gradually</summary>
         Iceberg = 3,
-        
-        /// <summary>Mid-point order - matches at mid-point of NBBO</summary>
         MidPoint = 4
     }
 
     /// <summary>
     /// Time-in-force options for orders.
     /// </summary>
-    public enum TimeInForce : byte
+    public enum TimeInForce
     {
-        /// <summary>Day order - expires at market close</summary>
         Day = 0,
-        
-        /// <summary>Good-Til-Canceled - remains active until canceled</summary>
         GTC = 1,
-        
-        /// <summary>Immediate-Or-Cancel - must fill immediately or cancel</summary>
         IOC = 2,
-        
-        /// <summary>Fill-Or-Kill - must fill completely or cancel</summary>
         FOK = 3,
-        
-        /// <summary>Opening - must execute during opening auction</summary>
         Opening = 4,
-        
-        /// <summary>Closing - must execute during closing auction</summary>
         Closing = 5
     }
 
@@ -59,7 +39,7 @@ namespace Hft.OrderBook
     /// Bits 4-7: Reserved for future use
     /// </summary>
     [Flags]
-    public enum OrderFlags : byte
+    public enum OrderAttributes
     {
         None = 0,
         Hidden = 1 << 0,
@@ -71,57 +51,30 @@ namespace Hft.OrderBook
     /// <summary>
     /// Order status enumeration.
     /// </summary>
-    public enum OrderStatus : byte
+    public enum OrderStatus
     {
-        /// <summary>Order submitted but not yet in book</summary>
         Pending = 0,
-        
-        /// <summary>Order active in order book</summary>
         Active = 1,
-        
-        /// <summary>Order partially filled</summary>
         PartiallyFilled = 2,
-        
-        /// <summary>Order fully filled</summary>
         Filled = 3,
-        
-        /// <summary>Order canceled</summary>
         Canceled = 4,
-        
-        /// <summary>Order rejected</summary>
         Rejected = 5,
-        
-        /// <summary>Order expired (time-in-force)</summary>
         Expired = 6
     }
 
     /// <summary>
     /// Order event type for audit logging.
     /// </summary>
-    public enum OrderEventType : byte
+    public enum OrderEventType
     {
-        /// <summary>New order added to book</summary>
+        None = 0,
         Add = 1,
-        
-        /// <summary>Order canceled</summary>
         Cancel = 2,
-        
-        /// <summary>Order amended (quantity change)</summary>
         Amend = 3,
-        
-        /// <summary>Order fully or partially filled</summary>
         Fill = 4,
-        
-        /// <summary>Order rejected</summary>
         Reject = 5,
-        
-        /// <summary>Order expired</summary>
         Expire = 6,
-        
-        /// <summary>Best bid/ask changed</summary>
         BboChange = 7,
-        
-        /// <summary>Trade executed</summary>
         Trade = 8
     }
 
@@ -132,34 +85,16 @@ namespace Hft.OrderBook
     /// Performance: Blittable struct, 32 bytes.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct OrderBookEntry
+    public readonly struct OrderBookEntry : IEquatable<OrderBookEntry>
     {
-        /// <summary>Price level (in ticks)</summary>
         public long Price { get; }
-
-        /// <summary>Total quantity at this price level (visible + hidden)</summary>
         public int TotalQuantity { get; }
-
-        /// <summary>Visible quantity at this price level</summary>
         public int VisibleQuantity { get; }
-
-        /// <summary>Number of orders at this price level</summary>
         public int OrderCount { get; }
-
-        /// <summary>Number of hidden orders at this price level</summary>
         public int HiddenOrderCount { get; }
-
-        /// <summary>Price level sequence number (for version checking)</summary>
         public long SequenceNumber { get; }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OrderBookEntry(
-            long price,
-            int totalQuantity,
-            int visibleQuantity,
-            int orderCount,
-            int hiddenOrderCount,
-            long sequenceNumber)
+        public OrderBookEntry(long price, int totalQuantity, int visibleQuantity, int orderCount, int hiddenOrderCount, long sequenceNumber)
         {
             Price = price;
             TotalQuantity = totalQuantity;
@@ -168,6 +103,12 @@ namespace Hft.OrderBook
             HiddenOrderCount = hiddenOrderCount;
             SequenceNumber = sequenceNumber;
         }
+
+        public override bool Equals(object? obj) => obj is OrderBookEntry other && Equals(other);
+        public bool Equals(OrderBookEntry other) => Price == other.Price && TotalQuantity == other.TotalQuantity && VisibleQuantity == other.VisibleQuantity && OrderCount == other.OrderCount && HiddenOrderCount == other.HiddenOrderCount && SequenceNumber == other.SequenceNumber;
+        public override int GetHashCode() => HashCode.Combine(Price, TotalQuantity, VisibleQuantity, OrderCount, HiddenOrderCount, SequenceNumber);
+        public static bool operator ==(OrderBookEntry left, OrderBookEntry right) => left.Equals(right);
+        public static bool operator !=(OrderBookEntry left, OrderBookEntry right) => !left.Equals(right);
     }
 
     /// <summary>
@@ -177,9 +118,8 @@ namespace Hft.OrderBook
     /// Performance: Blittable struct, 64 bytes (cache line aligned).
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct OrderQueueEntry
+    public readonly struct OrderQueueEntry : IEquatable<OrderQueueEntry>
     {
-        // Padding to align on 64-byte cache line
         private readonly long _padding1;
         private readonly long _padding2;
         private readonly long _padding3;
@@ -188,69 +128,26 @@ namespace Hft.OrderBook
         private readonly long _padding6;
         private readonly long _padding7;
 
-        /// <summary>Unique order identifier</summary>
         public long OrderId { get; }
-
-        /// <summary>Original order identifier (for amendments)</summary>
         public long OriginalOrderId { get; }
-
-        /// <summary>Instrument/symbol identifier</summary>
         public long InstrumentId { get; }
-
-        /// <summary>Order side (Buy/Sell)</summary>
         public OrderSide Side { get; }
-
-        /// <summary>Limit price (in ticks)</summary>
         public long Price { get; }
-
-        /// <summary>Original order quantity</summary>
         public int OriginalQuantity { get; }
-
-        /// <summary>Remaining quantity to be filled</summary>
         public int LeavesQuantity { get; }
-
-        /// <summary>Order type</summary>
         public OrderType Type { get; }
-
-        /// <summary>Time-in-force</summary>
         public TimeInForce TimeInForce { get; }
-
-        /// <summary>Order flags (hidden, post-only, etc.)</summary>
-        public OrderFlags Flags { get; }
-
-        /// <summary>Current order status</summary>
+        public OrderAttributes Flags { get; }
         public OrderStatus Status { get; }
-
-        /// <summary>Queue position (1 = front)</summary>
         public int QueuePosition { get; }
-
-        /// <summary>Arrival timestamp (microseconds since epoch)</summary>
         public long ArrivalTimestamp { get; }
-
-        /// <summary>Exchange-specific order reference</summary>
         public long ExchangeRef { get; }
 
-        // Additional padding
         private readonly long _padding8;
         private readonly long _padding9;
         private readonly long _padding10;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OrderQueueEntry(
-            long orderId,
-            long originalOrderId,
-            long instrumentId,
-            OrderSide side,
-            long price,
-            int originalQuantity,
-            int leavesQuantity,
-            OrderType type,
-            TimeInForce timeInForce,
-            OrderFlags flags,
-            OrderStatus status,
-            int queuePosition,
-            long arrivalTimestamp,
-            long exchangeRef)
+        public OrderQueueEntry(long orderId, long originalOrderId, long instrumentId, OrderSide side, long price, int originalQuantity, int leavesQuantity, OrderType type, TimeInForce timeInForce, OrderAttributes flags, OrderStatus status, int queuePosition, long arrivalTimestamp, long exchangeRef)
         {
             OrderId = orderId;
             OriginalOrderId = originalOrderId;
@@ -266,159 +163,36 @@ namespace Hft.OrderBook
             QueuePosition = queuePosition;
             ArrivalTimestamp = arrivalTimestamp;
             ExchangeRef = exchangeRef;
-
-            _padding1 = _padding2 = _padding3 = _padding4 = 
-                _padding5 = _padding6 = _padding7 = 
-                _padding8 = _padding9 = _padding10 = 0;
+            _padding1 = _padding2 = _padding3 = _padding4 = _padding5 = _padding6 = _padding7 = _padding8 = _padding9 = _padding10 = 0;
         }
 
-        /// <summary>
-        /// Creates an active order queue entry.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OrderQueueEntry CreateActive(
-            long orderId,
-            long instrumentId,
-            OrderSide side,
-            long price,
-            int quantity,
-            OrderType type,
-            TimeInForce timeInForce,
-            OrderFlags flags,
-            long arrivalTimestamp)
+        public static OrderQueueEntry CreateActive(long orderId, long instrumentId, OrderSide side, long price, int quantity, OrderType type, TimeInForce timeInForce, OrderAttributes flags, long arrivalTimestamp)
         {
-            return new OrderQueueEntry(
-                orderId: orderId,
-                originalOrderId: orderId,
-                instrumentId: instrumentId,
-                side: side,
-                price: price,
-                originalQuantity: quantity,
-                leavesQuantity: quantity,
-                type: type,
-                timeInForce: timeInForce,
-                flags: flags,
-                status: OrderStatus.Active,
-                queuePosition: 0, // Set by book when added
-                arrivalTimestamp: arrivalTimestamp,
-                exchangeRef: 0
-            );
+            return new OrderQueueEntry(orderId, orderId, instrumentId, side, price, quantity, quantity, type, timeInForce, flags, OrderStatus.Active, 0, arrivalTimestamp, 0);
         }
 
-        /// <summary>
-        /// Returns true if this order is hidden (not displayed).
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsHidden => (Flags & OrderFlags.Hidden) != 0;
-
-        /// <summary>
-        /// Returns true if this is a post-only order.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPostOnly => (Flags & OrderFlags.PostOnly) != 0;
-
-        /// <summary>
-        /// Returns true if this is a reduce-only order.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsReduceOnly => (Flags & OrderFlags.ReduceOnly) != 0;
-
-        /// <summary>
-        /// Returns true if this order can still be filled.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsHidden => (Flags & OrderAttributes.Hidden) != 0;
+        public bool IsPostOnly => (Flags & OrderAttributes.PostOnly) != 0;
+        public bool IsReduceOnly => (Flags & OrderAttributes.ReduceOnly) != 0;
         public bool IsActive => Status == OrderStatus.Active || Status == OrderStatus.PartiallyFilled;
+        public int DisplayQuantity => IsHidden ? 0 : LeavesQuantity;
 
-        /// <summary>
-        /// Returns the display quantity (visible portion).
-        /// For iceberg orders, this would be the visible peak.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetDisplayQuantity()
-        {
-            if (IsHidden)
-                return 0;
-            return LeavesQuantity;
-        }
+        public OrderQueueEntry WithLeavesQuantity(int newLeavesQty) => new OrderQueueEntry(OrderId, OriginalOrderId, InstrumentId, Side, Price, OriginalQuantity, newLeavesQty, Type, TimeInForce, Flags, newLeavesQty == 0 ? OrderStatus.Filled : OrderStatus.PartiallyFilled, QueuePosition, ArrivalTimestamp, ExchangeRef);
+        public OrderQueueEntry WithStatus(OrderStatus newStatus) => new OrderQueueEntry(OrderId, OriginalOrderId, InstrumentId, Side, Price, OriginalQuantity, LeavesQuantity, Type, TimeInForce, Flags, newStatus, QueuePosition, ArrivalTimestamp, ExchangeRef);
+        public OrderQueueEntry WithQueuePosition(int newPosition) => new OrderQueueEntry(OrderId, OriginalOrderId, InstrumentId, Side, Price, OriginalQuantity, LeavesQuantity, Type, TimeInForce, Flags, Status, newPosition, ArrivalTimestamp, ExchangeRef);
 
-        /// <summary>
-        /// Creates a copy with updated leaves quantity.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OrderQueueEntry WithLeavesQuantity(int newLeavesQty)
-        {
-            return new OrderQueueEntry(
-                OrderId,
-                OriginalOrderId,
-                InstrumentId,
-                Side,
-                Price,
-                OriginalQuantity,
-                newLeavesQty,
-                Type,
-                TimeInForce,
-                Flags,
-                newLeavesQty == 0 ? OrderStatus.Filled : OrderStatus.PartiallyFilled,
-                QueuePosition,
-                ArrivalTimestamp,
-                ExchangeRef
-            );
-        }
-
-        /// <summary>
-        /// Creates a copy with updated status.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OrderQueueEntry WithStatus(OrderStatus newStatus)
-        {
-            return new OrderQueueEntry(
-                OrderId,
-                OriginalOrderId,
-                InstrumentId,
-                Side,
-                Price,
-                OriginalQuantity,
-                LeavesQuantity,
-                Type,
-                TimeInForce,
-                Flags,
-                newStatus,
-                QueuePosition,
-                ArrivalTimestamp,
-                ExchangeRef
-            );
-        }
-
-        /// <summary>
-        /// Creates a copy with updated queue position.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OrderQueueEntry WithQueuePosition(int newPosition)
-        {
-            return new OrderQueueEntry(
-                OrderId,
-                OriginalOrderId,
-                InstrumentId,
-                Side,
-                Price,
-                OriginalQuantity,
-                LeavesQuantity,
-                Type,
-                TimeInForce,
-                Flags,
-                Status,
-                newPosition,
-                ArrivalTimestamp,
-                ExchangeRef
-            );
-        }
+        public override bool Equals(object? obj) => obj is OrderQueueEntry other && Equals(other);
+        public bool Equals(OrderQueueEntry other) => OrderId == other.OrderId && LeavesQuantity == other.LeavesQuantity && Status == other.Status;
+        public override int GetHashCode() => HashCode.Combine(OrderId, LeavesQuantity, Status);
+        public static bool operator ==(OrderQueueEntry left, OrderQueueEntry right) => left.Equals(right);
+        public static bool operator !=(OrderQueueEntry left, OrderQueueEntry right) => !left.Equals(right);
     }
 
     /// <summary>
     /// Best bid/ask snapshot for market data.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct BestBidAsk
+    public readonly struct BestBidAsk : IEquatable<BestBidAsk>
     {
         public long BestBidPrice { get; }
         public int BestBidSize { get; }
@@ -427,14 +201,7 @@ namespace Hft.OrderBook
         public long Timestamp { get; }
         public long SequenceNumber { get; }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BestBidAsk(
-            long bestBidPrice,
-            int bestBidSize,
-            long bestAskPrice,
-            int bestAskSize,
-            long timestamp,
-            long sequenceNumber)
+        public BestBidAsk(long bestBidPrice, int bestBidSize, long bestAskPrice, int bestAskSize, long timestamp, long sequenceNumber)
         {
             BestBidPrice = bestBidPrice;
             BestBidSize = bestBidSize;
@@ -444,21 +211,22 @@ namespace Hft.OrderBook
             SequenceNumber = sequenceNumber;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasBothSides => BestBidPrice > 0 && BestAskPrice > 0;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long MidPrice => (BestBidPrice + BestAskPrice) / 2;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long Spread => BestAskPrice - BestBidPrice;
+
+        public override bool Equals(object? obj) => obj is BestBidAsk other && Equals(other);
+        public bool Equals(BestBidAsk other) => BestBidPrice == other.BestBidPrice && BestBidSize == other.BestBidSize && BestAskPrice == other.BestAskPrice && BestAskSize == other.BestAskSize && Timestamp == other.Timestamp && SequenceNumber == other.SequenceNumber;
+        public override int GetHashCode() => HashCode.Combine(BestBidPrice, BestBidSize, BestAskPrice, BestAskSize, Timestamp, SequenceNumber);
+        public static bool operator ==(BestBidAsk left, BestBidAsk right) => left.Equals(right);
+        public static bool operator !=(BestBidAsk left, BestBidAsk right) => !left.Equals(right);
     }
 
     /// <summary>
     /// Order book depth at a given price level.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    public readonly struct BookDepth
+    public readonly struct BookDepth : IEquatable<BookDepth>
     {
         public long Price { get; }
         public int BidDepth { get; }
@@ -468,15 +236,7 @@ namespace Hft.OrderBook
         public int BidHidden { get; }
         public int AskHidden { get; }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BookDepth(
-            long price,
-            int bidDepth,
-            int askDepth,
-            int bidOrders,
-            int askOrders,
-            int bidHidden,
-            int askHidden)
+        public BookDepth(long price, int bidDepth, int askDepth, int bidOrders, int askOrders, int bidHidden, int askHidden)
         {
             Price = price;
             BidDepth = bidDepth;
@@ -487,17 +247,14 @@ namespace Hft.OrderBook
             AskHidden = askHidden;
         }
 
-        /// <summary>
-        /// Total visible liquidity at this price (bid + ask).
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int TotalVisibleLiquidity => BidDepth + AskDepth;
-
-        /// <summary>
-        /// Total hidden liquidity at this price.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int TotalHiddenLiquidity => BidHidden + AskHidden;
+
+        public override bool Equals(object? obj) => obj is BookDepth other && Equals(other);
+        public bool Equals(BookDepth other) => Price == other.Price && BidDepth == other.BidDepth && AskDepth == other.AskDepth && BidOrders == other.BidOrders && AskOrders == other.AskOrders && BidHidden == other.BidHidden && AskHidden == other.AskHidden;
+        public override int GetHashCode() => HashCode.Combine(Price, BidDepth, AskDepth, BidOrders, AskOrders, BidHidden, AskHidden);
+        public static bool operator ==(BookDepth left, BookDepth right) => left.Equals(right);
+        public static bool operator !=(BookDepth left, BookDepth right) => !left.Equals(right);
     }
 }
 

@@ -9,6 +9,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- GRANDMASTER: Treat warnings as errors for CI quality gate -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- GRANDMASTER: Enable latest analyzers for comprehensive code quality -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
 </Project>

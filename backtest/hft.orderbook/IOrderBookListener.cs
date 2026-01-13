@@ -230,16 +230,19 @@ namespace Hft.OrderBook
         /// <summary>
         /// Returns a summary string.
         /// </summary>
-        public string GetSummary()
+        public string Summary
         {
-            double durationSeconds = LastTimestamp > FirstTimestamp 
-                ? (LastTimestamp - FirstTimestamp) / 1_000_000.0 
-                : 0;
+            get
+            {
+                double durationSeconds = LastTimestamp > FirstTimestamp 
+                    ? (LastTimestamp - FirstTimestamp) / 1_000_000.0 
+                    : 0;
 
-            return $"Trades: {TotalTrades:N0}, Volume: {TotalVolume:N0}, " +
-                   $"Notional: {TotalNotional:N2}, Orders: +{TotalOrdersAdded:N0}/-{TotalOrdersCanceled:N0}, " +
-                   $"Duration: {durationSeconds:F3}s, " +
-                   $"Throughput: {(durationSeconds > 0 ? TotalTrades / durationDelta : 0):N0} trades/sec";
+                return $"Trades: {TotalTrades:N0}, Volume: {TotalVolume:N0}, " +
+                       $"Notional: {TotalNotional:N2}, Orders: +{TotalOrdersAdded:N0}/-{TotalOrdersCanceled:N0}, " +
+                       $"Duration: {durationSeconds:F3}s, " +
+                       $"Throughput: {(durationSeconds > 0 ? TotalTrades / durationSeconds : 0):N0} trades/sec";
+            }
         }
     }
 }

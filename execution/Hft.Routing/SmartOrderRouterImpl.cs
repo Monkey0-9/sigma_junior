@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Hft.Core;
-using Hft.Core.RingBuffer;
 using Hft.OrderBook;
 using Hft.Risk;
 
@@ -41,6 +41,7 @@ namespace Hft.Routing
         private readonly IRoutingAuditLogger _auditLogger;
         private readonly IPreTradeRiskEngine _riskEngine;
         private readonly IRateLimiter _rateLimiter;
+        private readonly ILogger<SmartOrderRouter> _logger;
 
         // Hot path: State
         private readonly Dictionary<string, IVenueAdapter> _venues;
@@ -75,7 +76,8 @@ namespace Hft.Routing
             RouterConfig? config = null,
             IRoutingAuditLogger? auditLogger = null,
             IPreTradeRiskEngine? riskEngine = null,
-            IRateLimiter? rateLimiter = null)
+            IRateLimiter? rateLimiter = null,
+            ILogger<SmartOrderRouter>? logger = null)
         {
             _config = config ?? new RouterConfig();
             _auditLogger = auditLogger ?? new RoutingAuditLogger();
@@ -83,6 +85,7 @@ namespace Hft.Routing
             _rateLimiter = rateLimiter ?? new TokenBucketRateLimiter(
                 maxTokens: _config.MaxConcurrentOrders,
                 refillRate: _config.MaxOrdersPerSecond);
+            _logger = logger ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<SmartOrderRouter>.Instance;
 
             _decisionEngine = new RoutingDecisionEngine(
                 _strategyParameters = RoutingStrategyParameters.Default(),
@@ -103,8 +106,8 @@ namespace Hft.Routing
                 TaskCreationOptions.LongRunning);
 
             _status = RouterStatus.Operational;
-            Console.WriteLine($"[SmartOrderRouter] Initialized with config: MaxOrdersPerSec={_config.MaxOrdersPerSecond}, " +
-                              $"MaxConcurrentOrders={_config.MaxConcurrentOrders}");
+            _logger.LogInformation("[SmartOrderRouter] Initialized with config: MaxOrdersPerSec={MaxOrdersPerSec}, MaxConcurrentOrders={MaxConcurrentOrder}", 
+                _config.MaxOrdersPerSecond, _config.MaxConcurrentOrders);
         }
 
         /// <inheritdoc/>
@@ -116,7 +119,7 @@ namespace Hft.Routing
             lock (_venues)
             {
                 _venues[venue.VenueId] = venue;
-                Console.WriteLine($"[SmartOrderRouter] Registered venue: {venue.VenueId} ({venue.VenueName})");
+                _logger.LogInformation("[SmartOrderRouter] Registered venue: {VenueId} ({VenueName})", venue.VenueId, venue.VenueName);
             }
         }
 
@@ -128,7 +131,7 @@ namespace Hft.Routing
                 if (_venues.Remove(venueId, out var venue))
                 {
                     venue.Dispose();
-                    Console.WriteLine($"[SmartOrderRouter] Unregistered venue: {venueId}");
+                    _logger.LogInformation("[SmartOrderRouter] Unregistered venue: {VenueId}", venueId);
                 }
             }
         }
@@ -411,7 +414,7 @@ namespace Hft.Routing
         {
             _strategyParameters = parameters;
             _decisionEngine.UpdateStrategyParameters(parameters);
-            Console.WriteLine($"[SmartOrderRouter] Updated strategy parameters");
+            _logger.LogInformation("[SmartOrderRouter] Updated strategy parameters");
         }
 
         /// <summary>
@@ -422,7 +425,7 @@ namespace Hft.Routing
             _killSwitchActive = true;
             Interlocked.Exchange(ref _lastStatusChange, Stopwatch.GetTimestamp());
 
-            Console.WriteLine($"[SmartOrderRouter] KILL SWITCH ACTIVATED: {reason}");
+            _logger.LogError("[SmartOrderRouter] KILL SWITCH ACTIVATED: {Reason}", reason);
 
             // Cancel all active orders
             lock (_activeOrders)
@@ -441,7 +444,7 @@ namespace Hft.Routing
         {
             _killSwitchActive = false;
             Interlocked.Exchange(ref _lastStatusChange, Stopwatch.GetTimestamp());
-            Console.WriteLine($"[SmartOrderRouter] Kill switch deactivated");
+            _logger.LogInformation("[SmartOrderRouter] Kill switch deactivated");
         }
 
         /// <summary>
