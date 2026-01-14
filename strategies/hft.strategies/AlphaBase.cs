@@ -3,11 +3,6 @@ using Hft.Core;
 
 namespace Hft.Strategies
 {
-    /// <summary>
-    /// Institutional Alpha Base Class.
-    /// Provides standardized lifecycle and governance for alpha models.
-    /// ENSURES: Separation of concerns between alpha generation and execution.
-    /// </summary>
     public abstract class AlphaBase
     {
         public string Name { get; }

@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\hft_platform\\Hft.Runner\\Hft.Runner.csproj": {}
+    "C:\\hft_platform\\Hft.runner\\Hft.Runner.csproj": {}
   },
   "projects": {
     "C:\\hft_platform\\backtest\\hft.backtest\\hft.backtest.csproj": {
@@ -512,14 +512,14 @@
         }
       }
     },
-    "C:\\hft_platform\\Hft.Runner\\Hft.Runner.csproj": {
+    "C:\\hft_platform\\Hft.runner\\Hft.Runner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\hft_platform\\Hft.Runner\\Hft.Runner.csproj",
+        "projectUniqueName": "C:\\hft_platform\\Hft.runner\\Hft.Runner.csproj",
         "projectName": "Hft.Runner",
-        "projectPath": "C:\\hft_platform\\Hft.Runner\\Hft.Runner.csproj",
+        "projectPath": "C:\\hft_platform\\Hft.runner\\Hft.Runner.csproj",
         "packagesPath": "C:\\Users\\Praveen P\\.nuget\\packages\\",
-        "outputPath": "C:\\hft_platform\\Hft.Runner\\obj\\",
+        "outputPath": "C:\\hft_platform\\Hft.runner\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Praveen P\\AppData\\Roaming\\NuGet\\NuGet.Config"

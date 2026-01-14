@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5bKzAzDyF3M=",
+  "dgSpecHash": "hZjA87Fk7es=",
   "success": true,
-  "projectFilePath": "C:\\hft_platform\\Hft.Runner\\Hft.Runner.csproj",
+  "projectFilePath": "C:\\hft_platform\\Hft.runner\\Hft.Runner.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Praveen P\\.nuget\\packages\\benchmarkdotnet\\0.13.12\\benchmarkdotnet.0.13.12.nupkg.sha512",
     "C:\\Users\\Praveen P\\.nuget\\packages\\benchmarkdotnet.annotations\\0.13.12\\benchmarkdotnet.annotations.0.13.12.nupkg.sha512",

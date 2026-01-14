@@ -11,11 +11,11 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("HFT Platform Team")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute(("Enterprise-grade order-book simulator with queue position modeling for institutio" +
     "nal backtesting"))]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7033acd24ee071a946790eaf64bb77d62c3b71db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c1dc86726221d9ef91f072ee54b028486814342")]
 [assembly: System.Reflection.AssemblyProductAttribute("hft.orderbook")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hft.orderbook")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -140,14 +140,16 @@ namespace Hft.Routing
             double totalUtility = 0;
             double totalFillProb = 0;
             double totalCostBps = 0;
+            int totalQuantityAllocated = 0;
+            var allocation = new int[MAX_VENUES];
 
             foreach (var venue in eligibleVenues)
             {
                 var score = ComputeVenueScore(parentOrder, liquidity, venue);
                 _scoreBuffer[venueCount] = score;
                 totalUtility += score.ExpectedUtility;
-                totalFillProb += score.FillProbability * score.AllocatedQuantity;
-                totalCostBps += score.ExpectedCostBps * score.AllocatedQuantity;
+                totalFillProb += score.FillProbability;
+                totalCostBps += score.ExpectedCostBps;
                 venueCount++;
             }
 
@@ -205,10 +207,6 @@ namespace Hft.Routing
                 childOrders,
                 weightedFillProb,
                 weightedCostBps);
-
-            // Local function for allocation
-            int totalQuantityAllocated = 0;
-            int[] allocation = new int[MAX_VENUES];
         }
 
         /// <summary>

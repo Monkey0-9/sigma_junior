@@ -266,22 +266,20 @@ namespace Hft.Routing
 
         public VenueBboSnapshot? GetBestBidAsk(long instrumentId)
         {
-            long? bestBid = _bidLevels.FirstOrDefault()?.Price;
-            int? bestBidSize = _bidLevels.FirstOrDefault()?.Size;
-            long? bestAsk = _askLevels.FirstOrDefault()?.Price;
-            int? bestAskSize = _askLevels.FirstOrDefault()?.Size;
+            var bestBidLevel = _bidLevels.FirstOrDefault();
+            var bestAskLevel = _askLevels.FirstOrDefault();
 
-            if (bestBid == null || bestAsk == null)
+            if (bestBidLevel.Price == 0 || bestAskLevel.Price == 0)
                 return null;
 
             return new VenueBboSnapshot
             {
                 InstrumentId = instrumentId,
                 Timestamp = Stopwatch.GetTimestamp(),
-                BestBidPrice = bestBid.Value,
-                BestBidSize = bestBidSize ?? 0,
-                BestAskPrice = bestAsk.Value,
-                BestAskSize = bestAskSize ?? 0
+                BestBidPrice = bestBidLevel.Price,
+                BestBidSize = bestBidLevel.Size,
+                BestAskPrice = bestAskLevel.Price,
+                BestAskSize = bestAskLevel.Size
             };
         }
 
